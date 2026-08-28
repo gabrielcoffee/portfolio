@@ -38,16 +38,16 @@ export default async function CritiquePage({ params }: PageProps) {
           alt={metadata.title}
           className="mb-6 aspect-square w-48 rounded-lg object-cover"
         />
-        <h1 className="mb-1 font-serif text-2xl font-medium">
+        <h1 className="mb-1 font-serif text-big font-medium">
           {metadata.title}
         </h1>
-        <p className="mb-2 text-sm text-muted-foreground">{metadata.creator}</p>
+        <p className="mb-2 text-small text-muted-foreground">{metadata.creator}</p>
         <div className="flex items-center gap-3">
           <StarRating rating={metadata.rating} />
-          <span className="text-xs capitalize text-muted-foreground">
+          <span className="text-small capitalize text-muted-foreground">
             {metadata.type}
           </span>
-          <span className="text-xs text-muted-foreground">
+          <span className="text-small text-muted-foreground">
             · {readTime} min read
           </span>
         </div>

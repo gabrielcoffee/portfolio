@@ -3,19 +3,26 @@ import Image from "next/image";
 
 export const mdxComponents: MDXComponents = {
   h1: ({ children }) => (
-    <h1 className="mb-6 mt-8 font-serif text-2xl font-medium">{children}</h1>
+    <h1 className="mb-6 mt-8 font-serif text-big font-medium">{children}</h1>
   ),
+  // Heading levels separate by weight and color, never by a new size.
   h2: ({ children }) => (
-    <h2 className="mb-4 mt-8 text-xl font-medium">{children}</h2>
+    <h2 className="mb-4 mt-8 text-medium font-semibold text-foreground">
+      {children}
+    </h2>
   ),
   h3: ({ children }) => (
-    <h3 className="mb-3 mt-6 text-lg font-medium">{children}</h3>
+    <h3 className="mb-3 mt-6 text-medium font-medium text-foreground">
+      {children}
+    </h3>
   ),
   h4: ({ children }) => (
-    <h4 className="mb-2 mt-4 text-base font-medium">{children}</h4>
+    <h4 className="mb-2 mt-4 text-medium font-medium text-muted-foreground">
+      {children}
+    </h4>
   ),
   p: ({ children }) => (
-    <p className="mb-4 text-[15px] leading-[1.8] text-muted-foreground">
+    <p className="mb-4 text-medium leading-[1.8] text-muted-foreground">
       {children}
     </p>
   ),
@@ -34,12 +41,12 @@ export const mdxComponents: MDXComponents = {
     </a>
   ),
   ul: ({ children }) => (
-    <ul className="mb-4 ml-6 list-disc space-y-1 text-[15px] leading-[1.8] text-muted-foreground">
+    <ul className="mb-4 ml-6 list-disc space-y-1 text-medium leading-[1.8] text-muted-foreground">
       {children}
     </ul>
   ),
   ol: ({ children }) => (
-    <ol className="mb-4 ml-6 list-decimal space-y-1 text-[15px] leading-[1.8] text-muted-foreground">
+    <ol className="mb-4 ml-6 list-decimal space-y-1 text-medium leading-[1.8] text-muted-foreground">
       {children}
     </ol>
   ),
@@ -50,12 +57,12 @@ export const mdxComponents: MDXComponents = {
     </blockquote>
   ),
   code: ({ children }) => (
-    <code className="rounded bg-muted px-1.5 py-0.5 text-sm text-foreground">
+    <code className="rounded bg-muted px-1.5 py-0.5 text-small text-foreground">
       {children}
     </code>
   ),
   pre: ({ children }) => (
-    <pre className="my-4 overflow-x-auto rounded-lg bg-muted p-4 text-sm">
+    <pre className="my-4 overflow-x-auto rounded-lg bg-muted p-4 text-small">
       {children}
     </pre>
   ),

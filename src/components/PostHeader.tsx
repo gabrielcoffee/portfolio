@@ -13,8 +13,8 @@ export default function PostHeader({ title, date, readTime }: PostHeaderProps) {
 
   return (
     <div className="mb-8">
-      <h1 className="mb-2 font-serif text-2xl font-medium">{title}</h1>
-      <p className="text-sm text-muted-foreground">
+      <h1 className="mb-2 font-serif text-big font-medium">{title}</h1>
+      <p className="text-small text-muted-foreground">
         {formattedDate} · {readTime} min read
       </p>
     </div>

@@ -53,16 +53,16 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
               alt="Gabriel Pereira"
               className="h-20 w-20 rounded-full object-cover"
             />
-            <span className="pointer-events-none whitespace-nowrap text-sm text-muted-foreground opacity-0 transition-opacity duration-200 delay-500 group-hover:opacity-100">
+            <span className="pointer-events-none whitespace-nowrap text-small text-muted-foreground opacity-0 transition-opacity duration-200 delay-500 group-hover:opacity-100">
               click for a little secret
             </span>
           </a>
         </FadeIn>
         <FadeIn index={1} animate={shouldAnimate} className="flex flex-col items-start pb-2">
-          <h1 className="font-serif text-2xl font-medium">Gabriel Pereira</h1>
+          <h1 className="font-serif text-big font-medium">Gabriel Pereira</h1>
         </FadeIn>
         <FadeIn index={2} animate={shouldAnimate}>
-          <p className="text-balance pb-8 text-sm tracking-[0.01em] text-muted-foreground">
+          <p className="text-balance pb-8 text-small text-muted-foreground">
             Brazilian software engineer who loves to build, listen to music, and
             learn new things.
           </p>
@@ -72,7 +72,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
       {/* PROJECTS */}
       <div>
         <FadeIn index={3} animate={shouldAnimate}>
-          <h2 className="flex items-center justify-between pb-1 text-base tracking-[0.01em] text-muted-foreground">
+          <h2 className="flex items-center justify-between pb-1 text-medium text-muted-foreground">
             Projects
             <button
               onClick={() => setShowMoreProjects(!showMoreProjects)}
@@ -131,7 +131,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
         <FadeIn
           index={7}
           animate={shouldAnimate}
-          className="flex justify-between pb-4 align-middle text-base tracking-[0.01em] text-muted-foreground"
+          className="flex justify-between pb-4 align-middle text-medium text-muted-foreground"
         >
           Journal
           <LinkArrow href="/journal">Older</LinkArrow>
@@ -149,7 +149,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
           ))}
           {writings.length === 0 && (
             <FadeIn index={8} animate={shouldAnimate}>
-              <p className="py-3 text-sm text-muted-foreground">No writings yet.</p>
+              <p className="py-3 text-small text-muted-foreground">No writings yet.</p>
             </FadeIn>
           )}
         </ul>
@@ -160,7 +160,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
         <FadeIn
           index={11}
           animate={shouldAnimate}
-          className="flex justify-between pb-6 align-middle text-base tracking-[0.01em] text-muted-foreground"
+          className="flex justify-between pb-6 align-middle text-medium text-muted-foreground"
         >
           Critiques
           <LinkArrow href="/critiques">More</LinkArrow>
@@ -182,7 +182,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
               ))}
             </ul>
           ) : (
-            <p className="pb-20 text-sm text-muted-foreground">
+            <p className="pb-20 text-small text-muted-foreground">
               No critiques yet.
             </p>
           )}
@@ -191,7 +191,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
 
       {/* SOCIAL LINKS */}
       <div>
-        <div className="flex gap-4 tracking-[0.01em] md:gap-6">
+        <div className="flex gap-4 md:gap-6">
           <FadeIn index={13} animate={shouldAnimate}>
             <LinkArrow href="https://x.com/coffeehead01" external>
               X

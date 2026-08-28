@@ -5,6 +5,21 @@ export default {
   darkMode: "class",
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    // Replaces Tailwind's default scale outright — `text-xs`, `text-lg`,
+    // `text-2xl` etc. no longer exist, so the system can't drift back.
+    //   big     page titles, your name
+    //   medium  nav, section labels, item titles (also the body default)
+    //   small   descriptions, dates, metadata
+    // `display` is the footer wordmark: a graphic, not text.
+    fontSize: {
+      big: ["1.5rem", { lineHeight: "1.25", letterSpacing: "-0.01em" }],
+      medium: ["1rem", { lineHeight: "1.5", letterSpacing: "0.01em" }],
+      small: ["0.875rem", { lineHeight: "1.6", letterSpacing: "0.01em" }],
+      display: [
+        "clamp(5rem, 18vw, 10rem)",
+        { lineHeight: "0.75", letterSpacing: "-0.02em" },
+      ],
+    },
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],

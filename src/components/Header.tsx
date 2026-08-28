@@ -93,7 +93,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative px-1.5 py-1 text-base sm:px-2"
+                  className="relative px-1.5 py-1 text-medium sm:px-2"
                   style={{
                     color: isActive
                       ? "hsl(var(--foreground))"

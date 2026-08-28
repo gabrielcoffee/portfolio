@@ -16,7 +16,7 @@ export default function LinkArrow({
   external,
 }: LinkArrowProps) {
   const classes = cn(
-    "arrow-reveal group flex items-center text-sm text-muted-foreground transition-colors hover:text-foreground",
+    "arrow-reveal group flex items-center text-small text-muted-foreground transition-colors hover:text-foreground",
     className
   );
 

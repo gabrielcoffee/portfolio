@@ -12,7 +12,7 @@ export default function JournalPage() {
 
   return (
     <>
-      <h1 className="mb-6 font-serif text-2xl font-medium">Journal</h1>
+      <h1 className="mb-6 font-serif text-big font-medium">Journal</h1>
       {writings.length > 0 ? (
         <ul className="flex flex-col">
           {writings.map((writing) => (
@@ -29,7 +29,7 @@ export default function JournalPage() {
           ))}
         </ul>
       ) : (
-        <p className="text-sm text-muted-foreground">No writings yet.</p>
+        <p className="text-small text-muted-foreground">No writings yet.</p>
       )}
     </>
   );

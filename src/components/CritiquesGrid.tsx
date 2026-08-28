@@ -65,7 +65,7 @@ export default function CritiquesGrid({ critiques }: CritiquesGridProps) {
     <>
       <BackButton href="/" />
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="font-serif text-2xl font-medium">
+        <h1 className="font-serif text-big font-medium">
           {filter === "all" ? "Critiques" : activeFilterLabel}
         </h1>
         <div className="flex gap-2">
@@ -76,7 +76,7 @@ export default function CritiquesGrid({ critiques }: CritiquesGridProps) {
                 setShowFilterMenu(!showFilterMenu);
                 setShowSortMenu(false);
               }}
-              className="flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-small text-muted-foreground transition-colors hover:text-foreground"
             >
               {activeFilterLabel}
               <ChevronDown className="h-3 w-3" />
@@ -97,7 +97,7 @@ export default function CritiquesGrid({ critiques }: CritiquesGridProps) {
                         setFilter(f.value);
                         setShowFilterMenu(false);
                       }}
-                      className={`block w-full px-3 py-1.5 text-left text-sm transition-colors hover:bg-accent ${
+                      className={`block w-full px-3 py-1.5 text-left text-small transition-colors hover:bg-accent ${
                         filter === f.value
                           ? "text-foreground"
                           : "text-muted-foreground"
@@ -118,7 +118,7 @@ export default function CritiquesGrid({ critiques }: CritiquesGridProps) {
                 setShowSortMenu(!showSortMenu);
                 setShowFilterMenu(false);
               }}
-              className="flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+              className="flex items-center gap-1 rounded-md border border-border px-3 py-1.5 text-small text-muted-foreground transition-colors hover:text-foreground"
             >
               {sortOptions.find((s) => s.value === sort)?.label}
               <ChevronDown className="h-3 w-3" />
@@ -139,7 +139,7 @@ export default function CritiquesGrid({ critiques }: CritiquesGridProps) {
                         setSort(s.value);
                         setShowSortMenu(false);
                       }}
-                      className={`block w-full px-3 py-1.5 text-left text-sm transition-colors hover:bg-accent ${
+                      className={`block w-full px-3 py-1.5 text-left text-small transition-colors hover:bg-accent ${
                         sort === s.value
                           ? "text-foreground"
                           : "text-muted-foreground"
@@ -170,7 +170,7 @@ export default function CritiquesGrid({ critiques }: CritiquesGridProps) {
           ))}
         </div>
       ) : (
-        <p className="py-12 text-center text-sm text-muted-foreground">
+        <p className="py-12 text-center text-small text-muted-foreground">
           No critiques found.
         </p>
       )}

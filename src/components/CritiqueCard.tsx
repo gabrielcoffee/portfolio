@@ -29,13 +29,13 @@ export default function CritiqueCard({
         />
       </div>
       <div className="flex flex-col gap-1">
-        <p className="line-clamp-2 text-sm">{title}</p>
-        <p className="text-xs tracking-[0.01em] text-muted-foreground">
+        <p className="line-clamp-2 text-small">{title}</p>
+        <p className="text-small text-muted-foreground">
           {creator}
         </p>
         <div className="flex items-center gap-2">
           <StarRating rating={rating} />
-          <span className="text-xs capitalize text-muted-foreground">
+          <span className="text-small capitalize text-muted-foreground">
             {type}
           </span>
         </div>

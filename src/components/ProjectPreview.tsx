@@ -56,7 +56,7 @@ export default function ProjectPreview({
           </AnimatePresence>
         </div>
       </div>
-      <p className="text-sm tracking-[0.01em] text-muted-foreground">
+      <p className="text-small text-muted-foreground">
         {description}
       </p>
     </Link>

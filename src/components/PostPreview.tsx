@@ -38,12 +38,12 @@ export default function PostPreview({
             strokeWidth={2.4}
           />
         </div>
-        <p className="text-sm tracking-[0.01em] text-muted-foreground">
+        <p className="text-small text-muted-foreground">
           {description}
         </p>
       </div>
       {showDate && formattedDate && (
-        <span className="hidden text-sm text-muted-foreground md:block">
+        <span className="hidden text-small text-muted-foreground md:block">
           {formattedDate}
         </span>
       )}

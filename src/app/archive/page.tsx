@@ -31,7 +31,7 @@ export default function ArchivePage() {
 
   return (
     <>
-      <h1 className="mb-6 font-serif text-2xl font-medium">Archive</h1>
+      <h1 className="mb-6 font-serif text-big font-medium">Archive</h1>
       {images.length > 0 ? (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
           {images.map((image) => (
@@ -43,15 +43,15 @@ export default function ArchivePage() {
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
-              <p className="mt-1.5 text-xs text-muted-foreground">
+              <p className="mt-1.5 text-small text-muted-foreground">
                 {image.name}
               </p>
             </div>
           ))}
         </div>
       ) : (
-        <p className="text-sm text-muted-foreground">
-          Drop images in <code className="text-xs">public/archive/</code> — filenames become titles (use dashes for spaces).
+        <p className="text-small text-muted-foreground">
+          Drop images in <code className="text-small">public/archive/</code> — filenames become titles (use dashes for spaces).
         </p>
       )}
     </>
