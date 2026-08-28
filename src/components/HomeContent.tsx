@@ -46,20 +46,20 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
             href="https://www.instagram.com/fernandesworks"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative mb-2 flex items-center gap-3"
+            className="group mb-2 flex items-center gap-3"
           >
             <img
               src="/avatar.png"
               alt="Gabriel Pereira"
-              className="h-20 w-20 rounded-full object-cover transition-transform duration-200 group-hover:scale-[1.2]"
+              className="h-20 w-20 rounded-full object-cover"
             />
-            <span className="pointer-events-none whitespace-nowrap text-xs text-muted-foreground opacity-0 transition-opacity duration-200 delay-500 group-hover:opacity-100">
+            <span className="pointer-events-none whitespace-nowrap text-sm text-muted-foreground opacity-0 transition-opacity duration-200 delay-500 group-hover:opacity-100">
               click for a little secret
             </span>
           </a>
         </FadeIn>
         <FadeIn index={1} animate={shouldAnimate} className="flex flex-col items-start pb-2">
-          <h1 className="font-serif text-xl font-medium">Gabriel Pereira</h1>
+          <h1 className="font-serif text-2xl font-medium">Gabriel Pereira</h1>
         </FadeIn>
         <FadeIn index={2} animate={shouldAnimate}>
           <p className="text-balance pb-8 text-sm tracking-[0.01em] text-muted-foreground">
@@ -72,7 +72,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
       {/* PROJECTS */}
       <div>
         <FadeIn index={3} animate={shouldAnimate}>
-          <h2 className="flex items-center justify-between pb-1 text-sm tracking-[0.01em] text-muted-foreground">
+          <h2 className="flex items-center justify-between pb-1 text-base tracking-[0.01em] text-muted-foreground">
             Projects
             <button
               onClick={() => setShowMoreProjects(!showMoreProjects)}
@@ -131,7 +131,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
         <FadeIn
           index={7}
           animate={shouldAnimate}
-          className="flex justify-between pb-4 align-middle text-sm tracking-[0.01em] text-muted-foreground"
+          className="flex justify-between pb-4 align-middle text-base tracking-[0.01em] text-muted-foreground"
         >
           Journal
           <LinkArrow href="/journal">Older</LinkArrow>
@@ -160,7 +160,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
         <FadeIn
           index={11}
           animate={shouldAnimate}
-          className="flex justify-between pb-6 align-middle text-sm tracking-[0.01em] text-muted-foreground"
+          className="flex justify-between pb-6 align-middle text-base tracking-[0.01em] text-muted-foreground"
         >
           Critiques
           <LinkArrow href="/critiques">More</LinkArrow>

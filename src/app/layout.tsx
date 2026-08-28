@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
+import WeatherWidget from "~/components/WeatherWidget";
 import "~/styles/globals.css";
 
 const inter = localFont({
@@ -41,11 +42,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <body className="font-sans antialiased">
         <ThemeProvider>
-          <main className="mx-auto max-w-[40rem] px-6 pt-12 sm:pt-20 md:px-0">
-            <Header />
-            {children}
+          <WeatherWidget />
+          <div className="flex min-h-dvh flex-col">
+            <main className="mx-auto w-full max-w-[40rem] flex-1 px-6 pt-12 sm:pt-20 md:px-0">
+              <Header />
+              {children}
+            </main>
             <Footer />
-          </main>
+          </div>
         </ThemeProvider>
       </body>
     </html>

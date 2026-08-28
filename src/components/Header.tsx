@@ -30,7 +30,7 @@ export default function Header() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="relative px-1.5 py-1 text-sm sm:px-2 sm:text-base"
+                  className="relative px-1.5 py-1 text-base sm:px-2"
                 >
                   {isActive && (
                     <motion.span
