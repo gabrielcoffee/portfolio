@@ -13,6 +13,7 @@ import LinkArrow from "~/components/LinkArrow";
 import type { WritingMetadata } from "~/lib/writings";
 import type { CritiqueMetadata } from "~/lib/critiques";
 import { projects } from "~/data/projects";
+import { site } from "~/data/site";
 
 interface HomeContentProps {
   writings: WritingMetadata[];
@@ -55,12 +56,12 @@ function SecretLink() {
     >
       <img
         src="/avatar.png"
-        alt="Gabriel Pereira"
+        alt={site.fullName}
         className="h-20 w-20 rounded-full object-cover"
       />
       {visible && (
         <motion.a
-          href="https://www.instagram.com/fernandesworks"
+          href={site.instagram}
           target="_blank"
           rel="noopener noreferrer"
           className="whitespace-nowrap text-small text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground"
@@ -101,12 +102,11 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
           <SecretLink />
         </FadeIn>
         <FadeIn index={1} animate={shouldAnimate} className="flex flex-col items-start pb-2">
-          <h1 className="font-serif text-big font-medium">Gabriel Pereira</h1>
+          <h1 className="font-serif text-big font-medium">{site.name}</h1>
         </FadeIn>
         <FadeIn index={2} animate={shouldAnimate}>
           <p className="text-balance pb-8 text-small text-muted-foreground">
-            Brazilian software engineer who loves to build, listen to music, and
-            learn new things.
+            Brazilian Software Engineer. <br></br>Gamedev and Songwriter in my free time.
           </p>
         </FadeIn>
       </div>

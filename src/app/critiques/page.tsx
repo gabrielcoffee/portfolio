@@ -1,9 +1,10 @@
 import { getAllCritiques } from "~/lib/critiques";
 import CritiquesGrid from "~/components/CritiquesGrid";
 import type { Metadata } from "next";
+import { pageTitle } from "~/data/site";
 
 export const metadata: Metadata = {
-  title: "Critiques — Gabriel Pereira",
+  title: pageTitle("Critiques"),
   description: "Reviews of albums, books, movies, and games.",
 };
 

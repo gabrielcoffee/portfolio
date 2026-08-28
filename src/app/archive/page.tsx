@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import { pageTitle } from "~/data/site";
 import fs from "fs";
 import path from "path";
 
 export const metadata: Metadata = {
-  title: "Archive — Gabriel Pereira",
+  title: pageTitle("Archive"),
   description: "Photo gallery.",
 };
 

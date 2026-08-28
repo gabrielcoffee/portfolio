@@ -5,6 +5,7 @@ import { mdxComponents } from "~/components/mdx";
 import StarRating from "~/components/StarRating";
 import BackButton from "~/components/BackButton";
 import type { Metadata } from "next";
+import { pageTitle } from "~/data/site";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -18,7 +19,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const { metadata } = getCritiqueBySlug(slug);
   return {
-    title: `${metadata.title} — Gabriel Pereira`,
+    title: pageTitle(metadata.title),
     description: `${metadata.type} by ${metadata.creator}`,
   };
 }

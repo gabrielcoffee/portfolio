@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import Header from "~/components/Header";
 import Footer from "~/components/Footer";
+import { site } from "~/data/site";
 import "~/styles/globals.css";
 
 const inter = localFont({
@@ -22,18 +23,15 @@ const inter = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Gabriel Pereira",
-  description: "Brazilian software engineer",
+  title: site.fullName,
+  description: site.description,
   openGraph: {
-    title: "Gabriel Pereira",
-    description: "Brazilian software engineer",
+    title: site.name,
+    description: site.description,
     type: "website",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: "Gabriel Pereira",
-    description: "Brazilian software engineer",
-  },
+  // Only the card style: X falls back to the og: tags for title/description.
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

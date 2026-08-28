@@ -10,15 +10,11 @@ export default {
     //   big     page titles, your name
     //   medium  nav, section labels, item titles (also the body default)
     //   small   descriptions, dates, metadata
-    // `display` is the footer wordmark: a graphic, not text.
+    // The footer wordmark is a graphic, not text — it sizes itself in Footer.tsx.
     fontSize: {
       big: ["1.5rem", { lineHeight: "1.25", letterSpacing: "-0.01em" }],
       medium: ["1rem", { lineHeight: "1.5", letterSpacing: "0.01em" }],
       small: ["0.875rem", { lineHeight: "1.6", letterSpacing: "0.01em" }],
-      display: [
-        "clamp(5rem, 18vw, 10rem)",
-        { lineHeight: "0.75", letterSpacing: "-0.02em" },
-      ],
     },
     extend: {
       fontFamily: {

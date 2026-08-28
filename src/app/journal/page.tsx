@@ -1,9 +1,10 @@
 import { getAllWritings } from "~/lib/writings";
 import PostPreview from "~/components/PostPreview";
 import type { Metadata } from "next";
+import { pageTitle } from "~/data/site";
 
 export const metadata: Metadata = {
-  title: "Journal — Gabriel Pereira",
+  title: pageTitle("Journal"),
   description: "Writings and thoughts.",
 };
 

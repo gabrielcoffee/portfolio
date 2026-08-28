@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
+import { pageTitle } from "~/data/site";
 
 export const metadata: Metadata = {
-  title: "Visitors — Gabriel Pereira",
+  title: pageTitle("Visitors"),
   description: "Sign the guestbook.",
 };
 
