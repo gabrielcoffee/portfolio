@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { animateAtom, expandedProjectsAtom } from "~/lib/atoms";
@@ -17,6 +17,62 @@ import { projects } from "~/data/projects";
 interface HomeContentProps {
   writings: WritingMetadata[];
   critiques: CritiqueMetadata[];
+}
+
+/* Secret reveal — all four knobs live here */
+const SECRET_DELAY_MS = 1500; // hover time before it appears
+const SECRET_DROP_PX = -10; // starts this far above, drops into place
+const SECRET_BLUR_PX = 6; // starts this blurred, sharpens to 0
+const SECRET_DURATION = 0.4; // seconds; drop + unblur + fade run together
+
+function SecretLink() {
+  const [visible, setVisible] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Clear on unmount so a pending reveal can't fire into a dead component.
+  useEffect(() => {
+    return () => {
+      if (timer.current) clearTimeout(timer.current);
+    };
+  }, []);
+
+  const show = () => {
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => setVisible(true), SECRET_DELAY_MS);
+  };
+
+  // Unmounts rather than animating out, so leaving hides it instantly.
+  const hide = () => {
+    if (timer.current) clearTimeout(timer.current);
+    setVisible(false);
+  };
+
+  return (
+    <div
+      className="mb-2 flex items-center gap-3"
+      onMouseEnter={show}
+      onMouseLeave={hide}
+    >
+      <img
+        src="/avatar.png"
+        alt="Gabriel Pereira"
+        className="h-20 w-20 rounded-full object-cover"
+      />
+      {visible && (
+        <motion.a
+          href="https://www.instagram.com/fernandesworks"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="whitespace-nowrap text-small text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground"
+          initial={{ opacity: 0, y: SECRET_DROP_PX, filter: `blur(${SECRET_BLUR_PX}px)` }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          transition={{ duration: SECRET_DURATION, ease: [0.4, 0, 0.2, 1] }}
+        >
+          Click here for a little secret
+        </motion.a>
+      )}
+    </div>
+  );
 }
 
 export default function HomeContent({ writings, critiques }: HomeContentProps) {
@@ -42,21 +98,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
       {/* BIO */}
       <div className="pb-2">
         <FadeIn index={0} animate={shouldAnimate} className="flex flex-col items-start">
-          <a
-            href="https://www.instagram.com/fernandesworks"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group mb-2 flex items-center gap-3"
-          >
-            <img
-              src="/avatar.png"
-              alt="Gabriel Pereira"
-              className="h-20 w-20 rounded-full object-cover"
-            />
-            <span className="pointer-events-none whitespace-nowrap text-small text-muted-foreground opacity-0 transition-opacity duration-200 delay-500 group-hover:opacity-100">
-              click for a little secret
-            </span>
-          </a>
+          <SecretLink />
         </FadeIn>
         <FadeIn index={1} animate={shouldAnimate} className="flex flex-col items-start pb-2">
           <h1 className="font-serif text-big font-medium">Gabriel Pereira</h1>
