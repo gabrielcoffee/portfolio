@@ -59,10 +59,6 @@
     color: hsl(var(--foreground));
   }
 
-  .dark body {
-    background-image: url("/noise.png");
-    background-repeat: repeat;
-  }
 
   ::selection {
     background: #49494949;

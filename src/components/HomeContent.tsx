@@ -46,15 +46,14 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
             href="https://www.instagram.com/fernandesworks"
             target="_blank"
             rel="noopener noreferrer"
-            title="click for a little secret"
-            className="group relative mb-2"
+            className="group relative mb-2 flex items-center gap-3"
           >
             <img
               src="/avatar.png"
               alt="Gabriel Pereira"
-              className="h-24 w-24 rounded-full object-cover transition-transform duration-200 group-hover:scale-105"
+              className="h-20 w-20 rounded-full object-cover transition-transform duration-200 group-hover:scale-[1.2]"
             />
-            <span className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-foreground/90 px-2 py-0.5 text-xs text-background opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+            <span className="pointer-events-none whitespace-nowrap text-xs text-muted-foreground opacity-0 transition-opacity duration-200 delay-500 group-hover:opacity-100">
               click for a little secret
             </span>
           </a>
