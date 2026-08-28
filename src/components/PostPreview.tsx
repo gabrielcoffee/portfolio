@@ -1,0 +1,52 @@
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+
+interface PostPreviewProps {
+  title: string;
+  description: string;
+  date?: string;
+  slug: string;
+  showDate?: boolean;
+  basePath?: string;
+}
+
+export default function PostPreview({
+  title,
+  description,
+  date,
+  slug,
+  showDate = false,
+  basePath = "/journal",
+}: PostPreviewProps) {
+  const formattedDate = date
+    ? new Date(date).toLocaleDateString("en-US", {
+        month: "2-digit",
+        year: "numeric",
+      })
+    : null;
+
+  return (
+    <Link
+      href={`${basePath}/${slug}`}
+      className="arrow-reveal group flex w-full cursor-pointer items-center justify-between py-3"
+    >
+      <div className="flex flex-col gap-0.5">
+        <div className="flex items-center transition-colors duration-150 group-hover:text-muted-foreground">
+          {title}
+          <ArrowRight
+            className="arrow-icon h-3 w-3"
+            strokeWidth={2.4}
+          />
+        </div>
+        <p className="text-sm tracking-[0.01em] text-muted-foreground">
+          {description}
+        </p>
+      </div>
+      {showDate && formattedDate && (
+        <span className="hidden text-sm text-muted-foreground md:block">
+          {formattedDate}
+        </span>
+      )}
+    </Link>
+  );
+}
