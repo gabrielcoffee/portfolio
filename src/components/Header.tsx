@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion, LayoutGroup } from "framer-motion";
+import { useRef } from "react";
+import { motion, LayoutGroup, useAnimationControls } from "framer-motion";
 import { ThemeSelector } from "~/components/ThemeSelector";
 
 const links = [
@@ -13,45 +13,61 @@ const links = [
   { href: "/visitors", label: "visitors" },
 ];
 
-function RollText({ children }: { children: string }) {
-  const [rolling, setRolling] = useState(false);
+const roll = { duration: 0.3, ease: [0.4, 0, 0.2, 1] } as const;
 
-  const handleHover = () => {
-    if (!rolling) {
-      setRolling(true);
+function RollText({ children }: { children: string }) {
+  const controls = useAnimationControls();
+  const hovered = useRef(false);
+  const current = useRef<"idle" | "hover">("idle");
+  const running = useRef(false);
+
+  // Plays whole rolls only: never interrupts one mid-flight. When a roll
+  // finishes, re-checks the pointer and rolls again if it disagrees.
+  const settle = async () => {
+    if (running.current) return;
+    running.current = true;
+    let target: "idle" | "hover";
+    while (current.current !== (target = hovered.current ? "hover" : "idle")) {
+      await controls.start(target);
+      current.current = target;
     }
+    running.current = false;
   };
 
   return (
     <motion.span
       className="relative z-10 flex overflow-hidden"
-      onHoverStart={handleHover}
-      animate={rolling ? "hover" : "idle"}
+      initial="idle"
+      animate={controls}
+      onHoverStart={() => {
+        hovered.current = true;
+        void settle();
+      }}
+      onHoverEnd={() => {
+        hovered.current = false;
+        void settle();
+      }}
     >
+      {/* Current text — rolls down and out on hover */}
       <motion.span
         className="flex"
         variants={{
           idle: { y: 0 },
           hover: { y: "100%" },
         }}
-        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
-        onAnimationComplete={() => {
-          if (rolling) {
-            // Snap back instantly (invisible — same text), ready for next hover
-            setRolling(false);
-          }
-        }}
+        transition={roll}
         aria-hidden
       >
         {children}
       </motion.span>
+      {/* Clone — enters from top on hover */}
       <motion.span
         className="absolute left-0 flex"
         variants={{
           idle: { y: "-100%" },
           hover: { y: 0 },
         }}
-        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        transition={roll}
       >
         {children}
       </motion.span>
