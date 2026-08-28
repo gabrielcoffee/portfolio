@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, LayoutGroup } from "framer-motion";
@@ -13,14 +14,20 @@ const links = [
 ];
 
 function RollText({ children }: { children: string }) {
+  const [rolling, setRolling] = useState(false);
+
+  const handleHover = () => {
+    if (!rolling) {
+      setRolling(true);
+    }
+  };
+
   return (
     <motion.span
       className="relative z-10 flex overflow-hidden"
-      initial="idle"
-      whileHover="hover"
-      animate="idle"
+      onHoverStart={handleHover}
+      animate={rolling ? "hover" : "idle"}
     >
-      {/* Current text — rolls down and out on hover */}
       <motion.span
         className="flex"
         variants={{
@@ -28,11 +35,16 @@ function RollText({ children }: { children: string }) {
           hover: { y: "100%" },
         }}
         transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        onAnimationComplete={() => {
+          if (rolling) {
+            // Snap back instantly (invisible — same text), ready for next hover
+            setRolling(false);
+          }
+        }}
         aria-hidden
       >
         {children}
       </motion.span>
-      {/* Clone — enters from top on hover */}
       <motion.span
         className="absolute left-0 flex"
         variants={{
