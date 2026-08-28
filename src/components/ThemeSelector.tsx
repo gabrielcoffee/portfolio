@@ -4,11 +4,15 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Sun, Moon, Monitor } from "lucide-react";
 
-const themes = ["system", "light", "dark"] as const;
+const themes = [
+  "system",
+  // "light",
+  "dark",
+] as const;
 
-const icons = {
+const icons: Record<string, typeof Sun> = {
   system: Monitor,
-  light: Sun,
+  // light: Sun,
   dark: Moon,
 };
 
@@ -20,11 +24,11 @@ export function ThemeSelector() {
 
   if (!mounted) return <div className="h-8 w-8" />;
 
-  const current = (theme ?? "system") as (typeof themes)[number];
-  const Icon = icons[current];
+  const current = theme ?? "system";
+  const Icon = icons[current] ?? Monitor;
 
   const cycle = () => {
-    const idx = themes.indexOf(current);
+    const idx = themes.indexOf(current as (typeof themes)[number]);
     setTheme(themes[(idx + 1) % themes.length]);
   };
 
