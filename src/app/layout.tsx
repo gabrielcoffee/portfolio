@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import Header from "~/components/Header";
-import Footer from "~/components/Footer";
 import { site } from "~/data/site";
 import "~/styles/globals.css";
 
@@ -40,11 +39,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="font-sans antialiased">
         <ThemeProvider>
           <div className="flex min-h-dvh flex-col">
-            <main className="mx-auto w-full max-w-[40rem] flex-1 px-6 pt-12 sm:pt-20 md:px-0">
+            <main className="mx-auto w-full max-w-[40rem] flex-1 px-6 pb-32 pt-12 sm:pt-20 md:px-0">
               <Header />
               {children}
             </main>
-            <Footer />
           </div>
         </ThemeProvider>
       </body>

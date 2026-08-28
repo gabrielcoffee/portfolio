@@ -22,13 +22,6 @@ export const projects: Project[] = [
     logo: "/logos/feels.svg",
   },
   {
-    id: "be-my-translator",
-    name: "Be My Translator",
-    description: "Translation app.",
-    url: "https://github.com/gabrielcoffee/be-my-translator",
-    logo: "/logos/be-my-translator.svg",
-  },
-  {
     id: "rent",
     name: "Rent",
     description: "C2C rent-everything startup.",

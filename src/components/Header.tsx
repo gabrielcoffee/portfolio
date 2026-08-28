@@ -13,6 +13,16 @@ const links = [
   { href: "/visitors", label: "visitors" },
 ];
 
+/* Wordmark backdrop — the knobs live here */
+const WORDMARK_SIZE = "clamp(3.5rem, 12vw, 5.5rem)";
+const WORDMARK_BLUR_PX = 5;
+const WORDMARK_OPACITY = 0.16;
+
+/* First path segment, so a new route gets a wordmark without a map here. */
+function pageName(pathname: string) {
+  return pathname.split("/").filter(Boolean)[0] ?? "start";
+}
+
 const roll = { duration: 0.3, ease: [0.4, 0, 0.2, 1] } as const;
 
 function RollText({ children }: { children: string }) {
@@ -80,8 +90,22 @@ export default function Header() {
 
   return (
     <LayoutGroup>
-      <aside className="mb-12">
-        <nav className="flex flex-row items-center justify-center">
+      <aside className="relative mb-12">
+        {/* Page name as a blurred backdrop behind the nav letters. Decorative,
+            so it is hidden from assistive tech and ignores the pointer. */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 select-none whitespace-nowrap font-serif font-medium"
+          style={{
+            fontSize: WORDMARK_SIZE,
+            lineHeight: 1,
+            color: `hsl(var(--foreground) / ${WORDMARK_OPACITY})`,
+            filter: `blur(${WORDMARK_BLUR_PX}px)`,
+          }}
+        >
+          {pageName(pathname)}
+        </span>
+        <nav className="relative flex flex-row items-center justify-center">
           <div className="flex flex-row gap-1">
             {links.map((link) => {
               const isActive =

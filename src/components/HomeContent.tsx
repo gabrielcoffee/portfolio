@@ -20,14 +20,6 @@ interface HomeContentProps {
   critiques: CritiqueMetadata[];
 }
 
-/* Vignette for the cut-out avatar: the drawing's neck ends on a flat edge, so
-   without it the transparent PNG shows a hard horizontal line. Centred above
-   the middle because the face sits high in the frame.
-     - first stop  : fully opaque out to here
-     - second stop : fully faded by here */
-const AVATAR_VIGNETTE =
-  "radial-gradient(ellipse 62% 58% at 50% 42%, #000 55%, transparent 88%)";
-
 /* Secret reveal — all four knobs live here */
 const SECRET_DELAY_MS = 1500; // hover time before it appears
 const SECRET_DROP_PX = -10; // starts this far above, drops into place
@@ -65,8 +57,7 @@ function SecretLink() {
       <img
         src="/avatar.png"
         alt={site.fullName}
-        className="h-20 w-20 object-contain"
-        style={{ maskImage: AVATAR_VIGNETTE, WebkitMaskImage: AVATAR_VIGNETTE }}
+        className="h-20 w-20 rounded-xl object-cover"
       />
       {visible && (
         <motion.a
@@ -124,7 +115,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
       <div>
         <FadeIn index={3} animate={shouldAnimate}>
           <h2 className="flex items-center justify-between pb-1 text-medium text-muted-foreground">
-            Projects
+            Personal Projects
             <button
               onClick={() => setShowMoreProjects(!showMoreProjects)}
               className="group flex items-center transition-all duration-200 ease-in-out hover:text-foreground"
