@@ -2,6 +2,7 @@ import { getAllWritings } from "~/lib/writings";
 import PostPreview from "~/components/PostPreview";
 import type { Metadata } from "next";
 import { pageTitle } from "~/data/site";
+import PageHeader from "~/components/PageHeader";
 
 export const metadata: Metadata = {
   title: pageTitle("Journal"),
@@ -13,7 +14,7 @@ export default function JournalPage() {
 
   return (
     <>
-      <h1 className="mb-6 font-serif text-big font-medium">Journal</h1>
+      <PageHeader title="Journal" subtitle="Writings and thoughts." />
       {writings.length > 0 ? (
         <ul className="flex flex-col">
           {writings.map((writing) => (

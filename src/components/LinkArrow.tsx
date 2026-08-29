@@ -17,14 +17,19 @@ export default function LinkArrow({
 }: LinkArrowProps) {
   const classes = cn(
     "arrow-reveal group flex items-center text-small text-muted-foreground transition-colors hover:text-foreground",
-    className
+    className,
   );
 
   if (external) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={classes}>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={classes}
+      >
         {children}
-        <ArrowRight className="arrow-icon h-3 w-3" strokeWidth={2.4} />
+        <ArrowRight className="arrow-icon h-icon w-icon" strokeWidth={2.4} />
       </a>
     );
   }
@@ -32,7 +37,7 @@ export default function LinkArrow({
   return (
     <Link href={href} className={classes}>
       {children}
-      <ArrowRight className="arrow-icon h-3 w-3" strokeWidth={2.4} />
+      <ArrowRight className="arrow-icon h-icon w-icon" strokeWidth={2.4} />
     </Link>
   );
 }

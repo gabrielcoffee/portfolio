@@ -39,7 +39,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="font-sans antialiased">
         <ThemeProvider>
           <div className="flex min-h-dvh flex-col">
-            <main className="mx-auto w-full max-w-[40rem] flex-1 px-6 pb-32 pt-12 sm:pt-20 md:px-0">
+            {/* pt matches the header's own mb-loose, so it sits centred in its
+                own band of space rather than pushed down. */}
+            <main className="mx-auto w-full max-w-measure flex-1 px-wide pb-page-bottom pt-page-top md:px-0">
               <Header />
               {children}
             </main>

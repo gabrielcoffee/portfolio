@@ -5,7 +5,7 @@ interface StarRatingProps {
 
 export default function StarRating({ rating, max = 5 }: StarRatingProps) {
   return (
-    <div className="flex gap-0.5">
+    <div className="flex gap-hair">
       {Array.from({ length: max }, (_, i) => {
         const filled = i < Math.floor(rating);
         const half = !filled && i < rating;
@@ -13,7 +13,7 @@ export default function StarRating({ rating, max = 5 }: StarRatingProps) {
         return (
           <svg
             key={i}
-            className="h-3 w-3"
+            className="h-icon w-icon"
             viewBox="0 0 20 20"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

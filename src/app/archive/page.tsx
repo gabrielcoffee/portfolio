@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pageTitle } from "~/data/site";
+import PageHeader from "~/components/PageHeader";
 import fs from "fs";
 import path from "path";
 
@@ -32,9 +33,9 @@ export default function ArchivePage() {
 
   return (
     <>
-      <h1 className="mb-6 font-serif text-big font-medium">Archive</h1>
+      <PageHeader title="Archive" subtitle="Things worth keeping." />
       {images.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-2 gap-base md:grid-cols-3">
           {images.map((image) => (
             <div key={image.src} className="group">
               <div className="aspect-square overflow-hidden rounded-lg bg-muted">
@@ -44,7 +45,7 @@ export default function ArchivePage() {
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
-              <p className="mt-1.5 text-small text-muted-foreground">
+              <p className="mt-snug text-small text-muted-foreground">
                 {image.name}
               </p>
             </div>
@@ -52,7 +53,8 @@ export default function ArchivePage() {
         </div>
       ) : (
         <p className="text-small text-muted-foreground">
-          Drop images in <code className="text-small">public/archive/</code> — filenames become titles (use dashes for spaces).
+          Drop images in <code className="text-small">public/archive/</code> —
+          filenames become titles (use dashes for spaces).
         </p>
       )}
     </>

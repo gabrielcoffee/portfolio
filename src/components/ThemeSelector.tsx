@@ -22,7 +22,7 @@ export function ThemeSelector() {
 
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return <div className="h-8 w-8" />;
+  if (!mounted) return <div className="h-control w-control" />;
 
   const current = theme ?? "system";
   const Icon = icons[current] ?? Monitor;
@@ -35,10 +35,10 @@ export function ThemeSelector() {
   return (
     <button
       onClick={cycle}
-      className="flex h-8 w-8 items-center justify-center rounded-md transition-colors hover:bg-accent"
+      className="flex h-control w-control items-center justify-center rounded-md transition-colors hover:bg-accent"
       aria-label={`Theme: ${current}`}
     >
-      <Icon className="h-4 w-4 text-muted-foreground" />
+      <Icon className="h-icon w-icon text-muted-foreground" />
     </button>
   );
 }

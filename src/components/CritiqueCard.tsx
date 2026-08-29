@@ -19,7 +19,7 @@ export default function CritiqueCard({
   slug,
 }: CritiqueCardProps) {
   return (
-    <Link href={`/critiques/${slug}`} className="group flex flex-col gap-3">
+    <Link href={`/critiques/${slug}`} className="group flex flex-col gap-cozy">
       <div className="aspect-square overflow-hidden rounded-md bg-muted">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
@@ -28,12 +28,10 @@ export default function CritiqueCard({
           className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-95"
         />
       </div>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-tight">
         <p className="line-clamp-2 text-small">{title}</p>
-        <p className="text-small text-muted-foreground">
-          {creator}
-        </p>
-        <div className="flex items-center gap-2">
+        <p className="text-small text-muted-foreground">{creator}</p>
+        <div className="flex items-center gap-snug">
           <StarRating rating={rating} />
           <span className="text-small capitalize text-muted-foreground">
             {type}

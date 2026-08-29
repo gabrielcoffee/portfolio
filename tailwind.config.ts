@@ -5,6 +5,42 @@ export default {
   darkMode: "class",
   content: ["./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    // Replaces Tailwind's default spacing scale outright — `p-4`, `gap-2`,
+    // `mb-6` etc. no longer exist, so the rhythm can't drift back. Every
+    // margin, padding and gap picks a ROLE, not a number.
+    //   hair     hairline separation (a row of stars)
+    //   tight    inside a control
+    //   snug     between two tightly-bound lines
+    //   cozy     between a title and its description
+    //   base     between rows of a list
+    //   wide     between a heading and its content; page gutter
+    //   section  between one section of a page and the next
+    //   loose    grid row gutter; below the header
+    //   page     the biggest break a page makes on its own
+    // Sizes below the rule are element dimensions, not rhythm.
+    spacing: {
+      0: "0px",
+      px: "1px",
+      hair: "0.125rem",
+      tight: "0.25rem",
+      snug: "0.5rem",
+      cozy: "0.75rem",
+      base: "1rem",
+      wide: "1.5rem",
+      section: "2rem",
+      loose: "3rem",
+      page: "4rem",
+      // ---- page frame ----
+      "page-top": "8rem",
+      "page-bottom": "16rem",
+      // ---- element sizes ----
+      icon: "0.75rem",   // every inline icon, no exceptions
+      control: "2rem",   // square tap target
+      menu: "9rem",      // dropdown min width
+      avatar: "5rem",
+      cover: "12rem",
+      measure: "40rem",  // the text column
+    },
     // Replaces Tailwind's default scale outright — `text-xs`, `text-lg`,
     // `text-2xl` etc. no longer exist, so the system can't drift back.
     //   big     page titles, your name
