@@ -2,7 +2,12 @@ import fs from "fs";
 import path from "path";
 
 const EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
-const picturesDirectory = path.join(process.cwd(), "public", "archive", "pictures");
+const picturesDirectory = path.join(
+  process.cwd(),
+  "public",
+  "archive",
+  "pictures",
+);
 
 export interface Picture {
   src: string;

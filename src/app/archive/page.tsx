@@ -1,61 +1,81 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import Image from "next/image";
 import { pageTitle } from "~/data/site";
 import { FadeIn } from "~/components/FadeIn";
-import fs from "fs";
-import path from "path";
+import { getPictures } from "~/lib/archive";
 
 export const metadata: Metadata = {
   title: pageTitle("Archive"),
-  description: "Photo gallery.",
+  description: "Mini manga, drawings and pictures.",
 };
 
-function getArchiveImages() {
-  const archiveDir = path.join(process.cwd(), "public", "archive");
-
-  if (!fs.existsSync(archiveDir)) {
-    return [];
-  }
-
-  const extensions = [".jpg", ".jpeg", ".png", ".webp", ".gif"];
-
-  return fs
-    .readdirSync(archiveDir)
-    .filter((file) => extensions.includes(path.extname(file).toLowerCase()))
-    .map((file) => {
-      const name = path.basename(file, path.extname(file)).replace(/-/g, " ");
-      return { src: `/archive/${file}`, name };
-    })
-    .sort((a, b) => a.name.localeCompare(b.name));
-}
-
 export default function ArchivePage() {
-  const images = getArchiveImages();
+  const cover = getPictures()[0];
+
+  const sections = [
+    {
+      title: "Mini Manga",
+      description: "My childhood comic book company.",
+      href: null,
+      cover: null,
+    },
+    {
+      title: "Drawings",
+      description: "Recent years of drawings and doodling.",
+      href: null,
+      cover: null,
+    },
+    {
+      title: "Pictures",
+      description: "Day to day life.",
+      href: "/archive/pictures",
+      cover: cover?.src ?? null,
+    },
+  ];
 
   return (
-    <>
-      {images.length > 0 ? (
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-          {images.map((image, i) => (
-            <FadeIn key={image.src} index={i} className="group">
-              <div className="aspect-square overflow-hidden rounded-lg bg-muted">
-                <img
-                  src={image.src}
-                  alt={image.name}
-                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+    <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+      {sections.map((section, i) => {
+        const tile = (
+          <>
+            <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
+              {section.cover && (
+                <Image
+                  src={section.cover}
+                  alt=""
+                  fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
-              </div>
-              <p className="mt-2 text-small text-muted-foreground">
-                {image.name}
-              </p>
-            </FadeIn>
-          ))}
-        </div>
-      ) : (
-        <p className="text-small text-muted-foreground">
-          Drop images in <code className="text-small">public/archive/</code> —
-          filenames become titles (use dashes for spaces).
-        </p>
-      )}
-    </>
+              )}
+            </div>
+            <p className="mt-2 flex items-baseline gap-2">
+              {section.title}
+              {!section.href && (
+                <span className="text-small text-muted-foreground">soon</span>
+              )}
+            </p>
+            <p className="text-small text-muted-foreground">
+              {section.description}
+            </p>
+          </>
+        );
+
+        return (
+          <FadeIn key={section.title} index={i}>
+            {/* An unfinished section is a plain div: no pointer, no hover, no
+                promise of a destination. */}
+            {section.href ? (
+              <Link href={section.href} className="group relative block">
+                {tile}
+              </Link>
+            ) : (
+              <div className="relative opacity-60">{tile}</div>
+            )}
+          </FadeIn>
+        );
+      })}
+    </div>
   );
 }

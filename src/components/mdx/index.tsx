@@ -1,11 +1,8 @@
 import type { MDXComponents } from "mdx/types";
-import Image from "next/image";
 
 export const mdxComponents: MDXComponents = {
   h1: ({ children }) => (
-    <h1 className="mb-6 mt-8 font-serif text-big font-medium">
-      {children}
-    </h1>
+    <h1 className="mb-6 mt-8 font-serif text-big font-medium">{children}</h1>
   ),
   h2: ({ children }) => (
     <h2 className="mb-4 mt-8 text-medium font-semibold text-foreground">

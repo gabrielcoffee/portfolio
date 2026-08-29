@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Gloria_Hallelujah } from "next/font/google";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import Header from "~/components/Header";
 import { site } from "~/data/site";
@@ -21,6 +22,13 @@ const inter = localFont({
   weight: "100 900",
 });
 
+const hand = Gloria_Hallelujah({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-hand",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: site.fullName,
   description: site.description,
@@ -34,7 +42,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={`${inter.variable} ${hand.variable}`}
+      suppressHydrationWarning
+    >
       <body className="font-sans antialiased">
         <ThemeProvider>
           <div className="flex min-h-dvh flex-col">

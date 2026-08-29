@@ -1,5 +1,5 @@
 export const site = {
-  name: "Gabriel Pereira",
+  name: "Gabriel Fernandes Pereira",
   fullName: "Gabriel Fernandes Pereira",
   description: "Software Engineer",
   instagram: "https://www.instagram.com/fernandesworks",
@@ -7,5 +7,5 @@ export const site = {
 
 /* "Journal" -> "Journal — Gabriel Pereira" */
 export function pageTitle(page: string) {
-  return `${page} — ${site.name}`;
+  return `${page} - ${site.name}`;
 }

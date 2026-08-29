@@ -35,6 +35,11 @@ const iconStyle = {
   filter: `drop-shadow(${NAV_SHADOW})`,
 } as const;
 
+/* Module state, not component state: the entrance belongs to the page load,
+   not to a render. Only ever written from an effect, so the server never sees
+   it flipped. */
+let entered = false;
+
 function pageName(pathname: string) {
   return pathname.split("/").filter(Boolean)[0] ?? "start";
 }
@@ -175,12 +180,11 @@ export default function Header() {
   const pathname = usePathname();
   // The header never unmounts, so this is true only on the session's first
   // paint — later renders are page swaps, which blur across instead.
-  const firstPaint = useRef(true);
-  const entrance = firstPaint.current;
+  const entrance = !entered;
   const label = pageName(pathname);
 
   useEffect(() => {
-    firstPaint.current = false;
+    entered = true;
   }, []);
 
   return (

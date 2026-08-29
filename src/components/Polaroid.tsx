@@ -9,6 +9,7 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
+import type { MotionProps } from "framer-motion";
 import type { Picture } from "~/lib/archive";
 
 const TILT_DEGREES = 6;
@@ -21,6 +22,10 @@ interface PolaroidProps {
   onClick?: () => void;
   /* Hidden while its copy is open in the overlay, so only one is ever seen. */
   hidden?: boolean;
+  /* Governs the flight between grid and overlay. The element being animated
+     owns it, so the overlay copy carries the opening spring and the grid copy
+     the closing one. */
+  transition?: MotionProps["transition"];
 }
 
 export default function Polaroid({
@@ -28,6 +33,7 @@ export default function Polaroid({
   className,
   onClick,
   hidden,
+  transition,
 }: PolaroidProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
@@ -66,6 +72,7 @@ export default function Polaroid({
     <motion.div
       ref={cardRef}
       layoutId={picture.src}
+      transition={transition}
       onClick={handleClick}
       onPointerMove={track}
       onPointerLeave={release}

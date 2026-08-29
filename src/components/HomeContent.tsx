@@ -1,7 +1,6 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { expandedProjectsAtom } from "~/lib/atoms";
@@ -35,12 +34,6 @@ export default function HomeContent({
   hasOlderWritings,
 }: HomeContentProps) {
   const [showMoreProjects, setShowMoreProjects] = useAtom(expandedProjectsAtom);
-  const wasExpandedOnMount = useRef(showMoreProjects);
-
-  useEffect(() => {
-    wasExpandedOnMount.current = false;
-  }, []);
-
   const visibleProjects = projects.slice(0, 3);
   const hiddenProjects = projects.slice(3);
 
@@ -120,14 +113,12 @@ export default function HomeContent({
               />
             </FadeIn>
           ))}
-          <AnimatePresence>
+          {/* initial={false}: arriving with the list already open should not
+              replay the expansion. */}
+          <AnimatePresence initial={false}>
             {showMoreProjects && (
               <motion.div
-                initial={
-                  wasExpandedOnMount.current
-                    ? false
-                    : { opacity: 0, filter: "blur(4px)", height: 0 }
-                }
+                initial={{ opacity: 0, filter: "blur(4px)", height: 0 }}
                 animate={{ opacity: 1, filter: "blur(0px)", height: "auto" }}
                 exit={{ opacity: 0, filter: "blur(4px)", height: 0 }}
                 transition={{ duration: 0.3, type: "spring", bounce: 0 }}
