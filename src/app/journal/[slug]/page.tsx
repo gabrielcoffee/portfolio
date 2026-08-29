@@ -2,8 +2,10 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import { getWritingBySlug, getAllWritingSlugs } from "~/lib/writings";
 import { mdxComponents } from "~/components/mdx";
-import PostHeader from "~/components/PostHeader";
 import BackButton from "~/components/BackButton";
+import { FadeIn } from "~/components/FadeIn";
+import PageHeader from "~/components/PageHeader";
+import { formatDate } from "~/lib/date";
 import type { Metadata } from "next";
 import { pageTitle } from "~/data/site";
 
@@ -30,22 +32,32 @@ export default async function WritingPage({ params }: PageProps) {
   const { slug } = await params;
   const { metadata, content } = getWritingBySlug(slug);
   const readTime = Math.max(1, Math.ceil(content.split(/\s+/).length / 150));
+  const date = formatDate(metadata.date, {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 
   return (
     <>
-      <BackButton href="/journal" />
-      <PostHeader
-        title={metadata.title}
-        date={metadata.date}
-        readTime={readTime}
-      />
-      <article className="prose-custom">
-        <MDXRemote
-          source={content}
-          components={mdxComponents}
-          options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+      <FadeIn index={0}>
+        <BackButton href="/journal" />
+      </FadeIn>
+      <FadeIn index={1}>
+        <PageHeader
+          title={metadata.title}
+          subtitle={`${date} · ${readTime} min read`}
         />
-      </article>
+      </FadeIn>
+      <FadeIn index={2}>
+        <article>
+          <MDXRemote
+            source={content}
+            components={mdxComponents}
+            options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+          />
+        </article>
+      </FadeIn>
     </>
   );
 }

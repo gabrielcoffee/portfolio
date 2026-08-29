@@ -29,7 +29,6 @@ export const metadata: Metadata = {
     description: site.description,
     type: "website",
   },
-  // Only the card style: X falls back to the og: tags for title/description.
   twitter: { card: "summary_large_image" },
 };
 
@@ -39,9 +38,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="font-sans antialiased">
         <ThemeProvider>
           <div className="flex min-h-dvh flex-col">
-            {/* pt matches the header's own mb-loose, so it sits centred in its
-                own band of space rather than pushed down. */}
-            <main className="mx-auto w-full max-w-measure flex-1 px-wide pb-page-bottom pt-page-top md:px-0">
+            {/* pt matches the header's own mb, so it sits in even air. */}
+            <main className="mx-auto w-full max-w-[40rem] flex-1 px-6 pb-16 pt-12 md:px-0">
               <Header />
               {children}
             </main>

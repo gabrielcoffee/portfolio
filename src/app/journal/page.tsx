@@ -1,8 +1,8 @@
 import { getAllWritings } from "~/lib/writings";
 import PostPreview from "~/components/PostPreview";
+import { FadeIn } from "~/components/FadeIn";
 import type { Metadata } from "next";
 import { pageTitle } from "~/data/site";
-import PageHeader from "~/components/PageHeader";
 
 export const metadata: Metadata = {
   title: pageTitle("Journal"),
@@ -14,20 +14,18 @@ export default function JournalPage() {
 
   return (
     <>
-      <PageHeader title="Journal" subtitle="Writings and thoughts." />
       {writings.length > 0 ? (
         <ul className="flex flex-col">
-          {writings.map((writing) => (
-            <li key={writing.slug}>
+          {writings.map((writing, i) => (
+            <FadeIn as="li" index={i} key={writing.slug}>
               <PostPreview
                 title={writing.title}
                 description={writing.description}
                 date={writing.date}
                 slug={writing.slug}
                 showDate
-                basePath="/journal"
               />
-            </li>
+            </FadeIn>
           ))}
         </ul>
       ) : (

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageTitle } from "~/data/site";
-import PageHeader from "~/components/PageHeader";
+import { FadeIn } from "~/components/FadeIn";
 
 export const metadata: Metadata = {
   title: pageTitle("Visitors"),
@@ -9,14 +9,14 @@ export const metadata: Metadata = {
 
 export default function VisitorsPage() {
   return (
-    <>
-      <PageHeader title="Visitors" subtitle="Sign the guestbook!" />
-      <div className="rounded-lg border border-border p-section text-center">
-        <p className="text-muted-foreground">Guestbook coming soon.</p>
-        <p className="mt-snug text-small text-muted-foreground">
-          Sign in with GitHub to leave a message.
-        </p>
-      </div>
-    </>
+    <FadeIn
+      index={0}
+      className="rounded-lg border border-border p-8 text-center"
+    >
+      <p className="text-muted-foreground">Guestbook coming soon.</p>
+      <p className="mt-2 text-small text-muted-foreground">
+        Sign in with GitHub to leave a message.
+      </p>
+    </FadeIn>
   );
 }

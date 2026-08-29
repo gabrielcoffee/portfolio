@@ -1,24 +1,21 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { cn } from "~/lib/utils";
 
 interface LinkArrowProps {
   href: string;
   children: React.ReactNode;
-  className?: string;
   external?: boolean;
 }
+
+const classes =
+  "arrow-reveal group flex items-center text-small text-muted-foreground transition-colors hover:text-foreground";
 
 export default function LinkArrow({
   href,
   children,
-  className,
   external,
 }: LinkArrowProps) {
-  const classes = cn(
-    "arrow-reveal group flex items-center text-small text-muted-foreground transition-colors hover:text-foreground",
-    className,
-  );
+  const arrow = <ArrowRight className="arrow-icon h-3 w-3" strokeWidth={2.4} />;
 
   if (external) {
     return (
@@ -29,7 +26,7 @@ export default function LinkArrow({
         className={classes}
       >
         {children}
-        <ArrowRight className="arrow-icon h-icon w-icon" strokeWidth={2.4} />
+        {arrow}
       </a>
     );
   }
@@ -37,7 +34,7 @@ export default function LinkArrow({
   return (
     <Link href={href} className={classes}>
       {children}
-      <ArrowRight className="arrow-icon h-icon w-icon" strokeWidth={2.4} />
+      {arrow}
     </Link>
   );
 }

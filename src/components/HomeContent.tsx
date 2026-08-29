@@ -1,48 +1,39 @@
 "use client";
 
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowUp } from "lucide-react";
-import { animateAtom, expandedProjectsAtom } from "~/lib/atoms";
+import { expandedProjectsAtom } from "~/lib/atoms";
 import { FadeIn } from "~/components/FadeIn";
 import ProjectPreview from "~/components/ProjectPreview";
 import PostPreview from "~/components/PostPreview";
-import CritiqueCard from "~/components/CritiqueCard";
 import LinkArrow from "~/components/LinkArrow";
 import type { WritingMetadata } from "~/lib/writings";
-import type { CritiqueMetadata } from "~/lib/critiques";
 import { projects } from "~/data/projects";
 import { site } from "~/data/site";
 
 interface HomeContentProps {
   writings: WritingMetadata[];
-  critiques: CritiqueMetadata[];
+  hasOlderWritings: boolean;
 }
 
-/* The picture is the link — no label, so finding it is the secret. */
-function SecretLink() {
-  return (
-    <div className="mb-snug flex items-center gap-cozy">
-      <a
-        href={site.instagram}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`${site.fullName} on Instagram`}
-      >
-        <img
-          src="/avatar.png"
-          alt={site.fullName}
-          className="h-avatar w-avatar rounded-xl object-cover"
-        />
-      </a>
-    </div>
-  );
-}
+/* AVATAR — the knobs */
+const AVATAR_SIZE = "5rem";
+const AVATAR_ZOOM = 1; // 1 = whole picture, 1.4 = crop 40% in
+const AVATAR_FOCUS = "center"; // what stays in frame: "center", "top", "60% 40%"
 
-export default function HomeContent({ writings, critiques }: HomeContentProps) {
-  // Header owns clearing this — it is the one component on every route.
-  const shouldAnimate = useAtomValue(animateAtom);
+const socials = [
+  { href: "https://x.com/coffeehead01", label: "X" },
+  { href: "https://github.com/gabrielcoffee", label: "GitHub" },
+  { href: "mailto:gfernandespereira18@gmail.com", label: "Email" },
+  { href: "https://www.youtube.com/@coffeehead01", label: "YouTube" },
+];
+
+export default function HomeContent({
+  writings,
+  hasOlderWritings,
+}: HomeContentProps) {
   const [showMoreProjects, setShowMoreProjects] = useAtom(expandedProjectsAtom);
   const wasExpandedOnMount = useRef(showMoreProjects);
 
@@ -53,29 +44,43 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
   const visibleProjects = projects.slice(0, 3);
   const hiddenProjects = projects.slice(3);
 
+  // Every FadeIn takes the next number, so sections can be reordered freely.
+  let step = 0;
+  const next = () => step++;
+
   return (
-    <div className="gap-snug">
+    <div className="gap-2">
       {/* BIO */}
-      <div className="pb-snug gap-snug flex flex-row pb-section">
-        <FadeIn
-          index={0}
-          animate={shouldAnimate}
-          className="flex flex-col items-start"
-        >
-          <SecretLink />
+      <div className="flex flex-row items-center gap-3 pb-16">
+        <FadeIn index={next()}>
+          {/* The picture is the link — no label, so finding it is the secret. */}
+          <a
+            href={site.instagram}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${site.fullName} on Instagram`}
+            className="block shrink-0 overflow-hidden rounded-xl"
+            style={{ width: AVATAR_SIZE, height: AVATAR_SIZE }}
+          >
+            <img
+              src="/avatar.png"
+              alt={site.fullName}
+              className="h-full w-full object-cover"
+              style={{
+                transform: `scale(${AVATAR_ZOOM})`,
+                objectPosition: AVATAR_FOCUS,
+              }}
+            />
+          </a>
         </FadeIn>
 
-        <div className="flex flex-col gap-0">
-          <FadeIn
-            index={1}
-            animate={shouldAnimate}
-            className="flex flex-col items-start"
-          >
+        <div className="flex flex-col">
+          <FadeIn index={next()}>
             <h1 className="font-serif text-big font-medium">{site.name}</h1>
           </FadeIn>
 
-          <FadeIn index={2} animate={shouldAnimate}>
-            <p className="text-balance ptext-small text-muted-foreground">
+          <FadeIn index={next()}>
+            <p className="text-balance text-small text-muted-foreground">
               Software, games, music, and whatever else I feel like creating.
             </p>
           </FadeIn>
@@ -84,25 +89,29 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
 
       {/* PROJECTS */}
       <div>
-        <FadeIn index={3} animate={shouldAnimate}>
-          <h2 className="flex items-center justify-between pb-tight text-medium text-muted-foreground">
+        <FadeIn index={next()}>
+          <h2 className="flex items-center justify-between pb-1 text-medium text-muted-foreground">
             Projects
-            <button
-              onClick={() => setShowMoreProjects(!showMoreProjects)}
-              className="group flex items-center transition-all duration-200 ease-in-out hover:text-foreground"
-            >
-              {showMoreProjects ? "Less" : "More"}
-              {showMoreProjects ? (
-                <ArrowUp className="ml-tight h-icon" strokeWidth={2.6} />
-              ) : (
-                <ArrowDown className="ml-tight h-icon" strokeWidth={2.6} />
-              )}
-            </button>
+            {/* Nothing to expand into — no toggle. */}
+            {hiddenProjects.length > 0 && (
+              <button
+                onClick={() => setShowMoreProjects(!showMoreProjects)}
+                className="group flex items-center transition-all duration-200 ease-in-out hover:text-foreground"
+              >
+                {showMoreProjects ? "Less" : "More"}
+                {showMoreProjects ? (
+                  <ArrowUp className="ml-1 h-3" strokeWidth={2.6} />
+                ) : (
+                  <ArrowDown className="ml-1 h-3" strokeWidth={2.6} />
+                )}
+              </button>
+            )}
           </h2>
         </FadeIn>
-        <div className="grid grid-cols-1 pb-section">
-          {visibleProjects.map((project, i) => (
-            <FadeIn key={project.id} index={4 + i} animate={shouldAnimate}>
+        {/* 3.25rem + the preview's own py-3 = the same 4rem gap the bio leaves. */}
+        <div className="grid grid-cols-1 pb-[3.25rem]">
+          {visibleProjects.map((project) => (
+            <FadeIn key={project.id} index={next()}>
               <ProjectPreview
                 title={project.name}
                 description={project.description}
@@ -139,35 +148,28 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
         </div>
       </div>
 
-      {/* WRITING */}
+      {/* JOURNAL */}
       <div>
         <FadeIn
-          index={7}
-          animate={shouldAnimate}
-          className="flex justify-between pb-base align-middle text-medium text-muted-foreground"
+          index={next()}
+          className="flex justify-between pb-1 align-middle text-medium text-muted-foreground"
         >
           Journal
-          <LinkArrow href="/journal">Older</LinkArrow>
+          {hasOlderWritings && <LinkArrow href="/journal">Older</LinkArrow>}
         </FadeIn>
-        <ul className="flex flex-col pb-section">
-          {writings.map((writing, i) => (
-            <FadeIn
-              as="li"
-              index={8 + i}
-              animate={shouldAnimate}
-              key={writing.slug}
-            >
+        <ul className="flex flex-col pb-[3.25rem]">
+          {writings.map((writing) => (
+            <FadeIn as="li" index={next()} key={writing.slug}>
               <PostPreview
                 title={writing.title}
                 description={writing.description}
                 slug={writing.slug}
-                showDate={false}
               />
             </FadeIn>
           ))}
           {writings.length === 0 && (
-            <FadeIn index={8} animate={shouldAnimate}>
-              <p className="py-cozy text-small text-muted-foreground">
+            <FadeIn index={next()}>
+              <p className="py-3 text-small text-muted-foreground">
                 No writings yet.
               </p>
             </FadeIn>
@@ -175,63 +177,21 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
         </ul>
       </div>
 
-      {/* CRITIQUES */}
+      {/* FIND ME */}
       <div>
-        <FadeIn
-          index={11}
-          animate={shouldAnimate}
-          className="flex justify-between pb-wide align-middle text-medium text-muted-foreground"
-        >
-          Critiques
-          <LinkArrow href="/critiques">More</LinkArrow>
+        <FadeIn index={next()}>
+          <h2 className="pb-1 text-medium text-muted-foreground">Find Me</h2>
         </FadeIn>
-        <FadeIn index={12} animate={shouldAnimate}>
-          {critiques.length > 0 ? (
-            <ul className="grid grid-cols-3 gap-x-section pb-page">
-              {critiques.map((critique) => (
-                <li key={critique.slug}>
-                  <CritiqueCard
-                    title={critique.title}
-                    type={critique.type}
-                    creator={critique.creator}
-                    image={critique.image}
-                    rating={critique.rating}
-                    slug={critique.slug}
-                  />
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="pb-page text-small text-muted-foreground">
-              No critiques yet.
-            </p>
-          )}
-        </FadeIn>
-      </div>
-
-      {/* SOCIAL LINKS */}
-      <div>
-        <div className="flex gap-base md:gap-wide">
-          <FadeIn index={13} animate={shouldAnimate}>
-            <LinkArrow href="https://x.com/coffeehead01" external>
-              X
-            </LinkArrow>
-          </FadeIn>
-          <FadeIn index={14} animate={shouldAnimate}>
-            <LinkArrow href="https://github.com/gabrielcoffee" external>
-              GitHub
-            </LinkArrow>
-          </FadeIn>
-          <FadeIn index={15} animate={shouldAnimate}>
-            <LinkArrow href="mailto:gfernandespereira18@gmail.com" external>
-              Email
-            </LinkArrow>
-          </FadeIn>
-          <FadeIn index={16} animate={shouldAnimate}>
-            <LinkArrow href="https://www.youtube.com/@coffeehead01" external>
-              YouTube
-            </LinkArrow>
-          </FadeIn>
+        {/* pt-3 stands in for the py-3 the preview cards carry, so the drop
+            from every section heading to its first row matches. */}
+        <div className="flex flex-col gap-2 pt-3">
+          {socials.map((social) => (
+            <FadeIn key={social.href} index={next()}>
+              <LinkArrow href={social.href} external>
+                {social.label}
+              </LinkArrow>
+            </FadeIn>
+          ))}
         </div>
       </div>
     </div>

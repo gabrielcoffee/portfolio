@@ -13,8 +13,7 @@ interface ProjectPreviewProps {
   logo: string;
 }
 
-/* A project whose url is "#" has nowhere to go yet. */
-const isLinked = (url: string) => url !== "#";
+const layout = "group flex w-full flex-col gap-1 py-3";
 
 export default function ProjectPreview({
   title,
@@ -23,17 +22,18 @@ export default function ProjectPreview({
   logo,
 }: ProjectPreviewProps) {
   const [isHovering, setIsHovering] = useState(false);
-  const linked = isLinked(url);
+  // A project whose url is "#" has nowhere to go yet.
+  const linked = url !== "#";
 
   const body = (
     <>
-      <div className="flex items-center gap-snug">
+      <div className="flex items-center gap-2">
         <Image
           src={logo}
           alt={title}
           width={12}
           height={12}
-          className="h-icon w-icon"
+          className="h-3 w-3"
         />
         <div
           className={`flex items-center transition-all duration-150 ease-in-out ${
@@ -50,7 +50,7 @@ export default function ProjectPreview({
                 transition={{ duration: 0.15, ease: "easeInOut" }}
               >
                 <ArrowUpRight
-                  className="h-icon w-icon text-muted-foreground"
+                  className="h-3 w-3 text-muted-foreground"
                   strokeWidth={2.6}
                 />
               </motion.div>
@@ -62,11 +62,6 @@ export default function ProjectPreview({
     </>
   );
 
-  const layout = "group flex w-full flex-col gap-tight py-cozy";
-
-  // Rendered as a plain div rather than a dead link: no pointer cursor, no
-  // hover tint, and isHovering never flips, so the arrow — which promises a
-  // destination — never appears.
   if (!linked) return <div className={layout}>{body}</div>;
 
   return (

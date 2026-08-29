@@ -1,10 +1,11 @@
 import HomeContent from "~/components/HomeContent";
 import { getAllWritings } from "~/lib/writings";
-import { getAllCritiques } from "~/lib/critiques";
 
 export default function Home() {
-  const writings = getAllWritings().slice(0, 3);
-  const critiques = getAllCritiques().slice(0, 3);
+  const allWritings = getAllWritings();
+  const writings = allWritings.slice(0, 3);
 
-  return <HomeContent writings={writings} critiques={critiques} />;
+  return (
+    <HomeContent writings={writings} hasOlderWritings={allWritings.length > 3} />
+  );
 }
