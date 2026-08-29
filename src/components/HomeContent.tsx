@@ -1,7 +1,7 @@
 "use client";
 
-import { useAtom } from "jotai";
-import { useEffect, useRef, useState } from "react";
+import { useAtom, useAtomValue } from "jotai";
+import { useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { animateAtom, expandedProjectsAtom } from "~/lib/atoms";
@@ -20,64 +20,29 @@ interface HomeContentProps {
   critiques: CritiqueMetadata[];
 }
 
-/* Secret reveal — all four knobs live here */
-const SECRET_DELAY_MS = 1500; // hover time before it appears
-const SECRET_DROP_PX = -10; // starts this far above, drops into place
-const SECRET_BLUR_PX = 6; // starts this blurred, sharpens to 0
-const SECRET_DURATION = 0.4; // seconds; drop + unblur + fade run together
-
+/* The picture is the link — no label, so finding it is the secret. */
 function SecretLink() {
-  const [visible, setVisible] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  // Clear on unmount so a pending reveal can't fire into a dead component.
-  useEffect(() => {
-    return () => {
-      if (timer.current) clearTimeout(timer.current);
-    };
-  }, []);
-
-  const show = () => {
-    if (timer.current) clearTimeout(timer.current);
-    timer.current = setTimeout(() => setVisible(true), SECRET_DELAY_MS);
-  };
-
-  // Unmounts rather than animating out, so leaving hides it instantly.
-  const hide = () => {
-    if (timer.current) clearTimeout(timer.current);
-    setVisible(false);
-  };
-
   return (
-    <div
-      className="mb-2 flex items-center gap-3"
-      onMouseEnter={show}
-      onMouseLeave={hide}
-    >
-      <img
-        src="/avatar.png"
-        alt={site.fullName}
-        className="h-20 w-20 rounded-xl object-cover"
-      />
-      {visible && (
-        <motion.a
-          href={site.instagram}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="whitespace-nowrap text-small text-muted-foreground underline underline-offset-2 transition-colors hover:text-foreground"
-          initial={{ opacity: 0, y: SECRET_DROP_PX, filter: `blur(${SECRET_BLUR_PX}px)` }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: SECRET_DURATION, ease: [0.4, 0, 0.2, 1] }}
-        >
-          Click here for a little secret
-        </motion.a>
-      )}
+    <div className="mb-snug flex items-center gap-cozy">
+      <a
+        href={site.instagram}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${site.fullName} on Instagram`}
+      >
+        <img
+          src="/avatar.png"
+          alt={site.fullName}
+          className="h-avatar w-avatar rounded-xl object-cover"
+        />
+      </a>
     </div>
   );
 }
 
 export default function HomeContent({ writings, critiques }: HomeContentProps) {
-  const [shouldAnimate, setShouldAnimate] = useAtom(animateAtom);
+  // Header owns clearing this — it is the one component on every route.
+  const shouldAnimate = useAtomValue(animateAtom);
   const [showMoreProjects, setShowMoreProjects] = useAtom(expandedProjectsAtom);
   const wasExpandedOnMount = useRef(showMoreProjects);
 
@@ -85,51 +50,57 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
     wasExpandedOnMount.current = false;
   }, []);
 
-  useEffect(() => {
-    if (shouldAnimate) {
-      setTimeout(() => setShouldAnimate(false), 2000);
-    }
-  }, [shouldAnimate, setShouldAnimate]);
-
   const visibleProjects = projects.slice(0, 3);
   const hiddenProjects = projects.slice(3);
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="gap-snug">
       {/* BIO */}
-      <div className="pb-2">
-        <FadeIn index={0} animate={shouldAnimate} className="flex flex-col items-start">
+      <div className="pb-snug gap-snug flex flex-row pb-section">
+        <FadeIn
+          index={0}
+          animate={shouldAnimate}
+          className="flex flex-col items-start"
+        >
           <SecretLink />
         </FadeIn>
-        <FadeIn index={1} animate={shouldAnimate} className="flex flex-col items-start pb-2">
-          <h1 className="font-serif text-big font-medium">{site.name}</h1>
-        </FadeIn>
-        <FadeIn index={2} animate={shouldAnimate}>
-          <p className="text-balance pb-8 text-small text-muted-foreground">
-            Brazilian Software Engineer. <br></br>Gamedev and Songwriter in my free time.
-          </p>
-        </FadeIn>
+
+        <div className="flex flex-col gap-0">
+          <FadeIn
+            index={1}
+            animate={shouldAnimate}
+            className="flex flex-col items-start"
+          >
+            <h1 className="font-serif text-big font-medium">{site.name}</h1>
+          </FadeIn>
+
+          <FadeIn index={2} animate={shouldAnimate}>
+            <p className="text-balance ptext-small text-muted-foreground">
+              Software, games, music, and whatever else I feel like creating.
+            </p>
+          </FadeIn>
+        </div>
       </div>
 
       {/* PROJECTS */}
       <div>
         <FadeIn index={3} animate={shouldAnimate}>
-          <h2 className="flex items-center justify-between pb-1 text-medium text-muted-foreground">
-            Personal Projects
+          <h2 className="flex items-center justify-between pb-tight text-medium text-muted-foreground">
+            Projects
             <button
               onClick={() => setShowMoreProjects(!showMoreProjects)}
               className="group flex items-center transition-all duration-200 ease-in-out hover:text-foreground"
             >
               {showMoreProjects ? "Less" : "More"}
               {showMoreProjects ? (
-                <ArrowUp className="ml-1 h-2.5" strokeWidth={2.6} />
+                <ArrowUp className="ml-tight h-icon" strokeWidth={2.6} />
               ) : (
-                <ArrowDown className="ml-1 h-2.5" strokeWidth={2.6} />
+                <ArrowDown className="ml-tight h-icon" strokeWidth={2.6} />
               )}
             </button>
           </h2>
         </FadeIn>
-        <div className="grid grid-cols-1 pb-8">
+        <div className="grid grid-cols-1 pb-section">
           {visibleProjects.map((project, i) => (
             <FadeIn key={project.id} index={4 + i} animate={shouldAnimate}>
               <ProjectPreview
@@ -173,14 +144,19 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
         <FadeIn
           index={7}
           animate={shouldAnimate}
-          className="flex justify-between pb-4 align-middle text-medium text-muted-foreground"
+          className="flex justify-between pb-base align-middle text-medium text-muted-foreground"
         >
           Journal
           <LinkArrow href="/journal">Older</LinkArrow>
         </FadeIn>
-        <ul className="flex flex-col pb-8">
+        <ul className="flex flex-col pb-section">
           {writings.map((writing, i) => (
-            <FadeIn as="li" index={8 + i} animate={shouldAnimate} key={writing.slug}>
+            <FadeIn
+              as="li"
+              index={8 + i}
+              animate={shouldAnimate}
+              key={writing.slug}
+            >
               <PostPreview
                 title={writing.title}
                 description={writing.description}
@@ -191,7 +167,9 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
           ))}
           {writings.length === 0 && (
             <FadeIn index={8} animate={shouldAnimate}>
-              <p className="py-3 text-small text-muted-foreground">No writings yet.</p>
+              <p className="py-cozy text-small text-muted-foreground">
+                No writings yet.
+              </p>
             </FadeIn>
           )}
         </ul>
@@ -202,14 +180,14 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
         <FadeIn
           index={11}
           animate={shouldAnimate}
-          className="flex justify-between pb-6 align-middle text-medium text-muted-foreground"
+          className="flex justify-between pb-wide align-middle text-medium text-muted-foreground"
         >
           Critiques
           <LinkArrow href="/critiques">More</LinkArrow>
         </FadeIn>
         <FadeIn index={12} animate={shouldAnimate}>
           {critiques.length > 0 ? (
-            <ul className="grid grid-cols-3 gap-x-8 pb-20">
+            <ul className="grid grid-cols-3 gap-x-section pb-page">
               {critiques.map((critique) => (
                 <li key={critique.slug}>
                   <CritiqueCard
@@ -224,7 +202,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
               ))}
             </ul>
           ) : (
-            <p className="pb-20 text-small text-muted-foreground">
+            <p className="pb-page text-small text-muted-foreground">
               No critiques yet.
             </p>
           )}
@@ -233,7 +211,7 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
 
       {/* SOCIAL LINKS */}
       <div>
-        <div className="flex gap-4 md:gap-6">
+        <div className="flex gap-base md:gap-wide">
           <FadeIn index={13} animate={shouldAnimate}>
             <LinkArrow href="https://x.com/coffeehead01" external>
               X
@@ -256,7 +234,6 @@ export default function HomeContent({ writings, critiques }: HomeContentProps) {
           </FadeIn>
         </div>
       </div>
-
     </div>
   );
 }
