@@ -5,7 +5,7 @@ export const site = {
   name: "Gabriel Pereira",
   /** Longer form, used where the full name reads better (browser tab, image alt). */
   fullName: "Gabriel Fernandes Pereira",
-  description: "Brazilian software engineer",
+  description: "Software Engineer",
   instagram: "https://www.instagram.com/fernandesworks",
 } as const;
 
