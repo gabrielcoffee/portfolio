@@ -13,6 +13,9 @@ interface ProjectPreviewProps {
   logo: string;
 }
 
+/* A project whose url is "#" has nowhere to go yet. */
+const isLinked = (url: string) => url !== "#";
+
 export default function ProjectPreview({
   title,
   description,
@@ -20,24 +23,23 @@ export default function ProjectPreview({
   logo,
 }: ProjectPreviewProps) {
   const [isHovering, setIsHovering] = useState(false);
+  const linked = isLinked(url);
 
-  return (
-    <Link
-      href={url}
-      target="_blank"
-      onMouseEnter={() => setIsHovering(true)}
-      onMouseLeave={() => setIsHovering(false)}
-      className="group flex w-full cursor-pointer flex-col gap-1 py-3"
-    >
-      <div className="flex items-center gap-2">
+  const body = (
+    <>
+      <div className="flex items-center gap-snug">
         <Image
           src={logo}
           alt={title}
           width={12}
           height={12}
-          className="h-3 w-3"
+          className="h-icon w-icon"
         />
-        <div className="flex items-center transition-all duration-150 ease-in-out group-hover:text-muted-foreground">
+        <div
+          className={`flex items-center transition-all duration-150 ease-in-out ${
+            linked ? "group-hover:text-muted-foreground" : ""
+          }`}
+        >
           {title}
           <AnimatePresence>
             {isHovering && (
@@ -48,7 +50,7 @@ export default function ProjectPreview({
                 transition={{ duration: 0.15, ease: "easeInOut" }}
               >
                 <ArrowUpRight
-                  className="h-2.5 w-2.5 text-muted-foreground"
+                  className="h-icon w-icon text-muted-foreground"
                   strokeWidth={2.6}
                 />
               </motion.div>
@@ -56,9 +58,26 @@ export default function ProjectPreview({
           </AnimatePresence>
         </div>
       </div>
-      <p className="text-small text-muted-foreground">
-        {description}
-      </p>
+      <p className="text-small text-muted-foreground">{description}</p>
+    </>
+  );
+
+  const layout = "group flex w-full flex-col gap-tight py-cozy";
+
+  // Rendered as a plain div rather than a dead link: no pointer cursor, no
+  // hover tint, and isHovering never flips, so the arrow — which promises a
+  // destination — never appears.
+  if (!linked) return <div className={layout}>{body}</div>;
+
+  return (
+    <Link
+      href={url}
+      target="_blank"
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      className={`${layout} cursor-pointer`}
+    >
+      {body}
     </Link>
   );
 }
