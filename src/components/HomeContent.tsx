@@ -23,7 +23,7 @@ const AVATAR_ZOOM = 1; // 1 = whole picture, 1.4 = crop 40% in
 const AVATAR_FOCUS = "center"; // what stays in frame: "center", "top", "60% 40%"
 
 const socials = [
-  { href: "https://x.com/coffeehead01", label: "X" },
+  { href: "https://x.com/gabrielfp101", label: "X" },
   { href: "https://github.com/gabrielcoffee", label: "GitHub" },
   { href: "mailto:gfernandespereira18@gmail.com", label: "Email" },
   { href: "https://www.youtube.com/@coffeehead01", label: "YouTube" },
