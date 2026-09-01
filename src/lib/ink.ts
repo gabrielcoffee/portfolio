@@ -52,7 +52,7 @@ export function measureInk(text: string, font: InkFont): InkMetrics | null {
 
    x — the word's own ink.
    y — baseline and x-height, which are font-constant: anchoring on the word's
-       ink would ride "journal" up on its descender and drop "archive". */
+       ink would ride "writings" up on its descender and drop "archive". */
 export function inkCenteringOffset(ink: InkMetrics, fontSize: number) {
   const halfLeading = (fontSize - (ink.fontAscent + ink.fontDescent)) / 2;
   const baselineFromTop = halfLeading + ink.fontAscent;

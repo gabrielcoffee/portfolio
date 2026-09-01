@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
+import { ICON, ICON_STROKE } from "~/components/icons";
 
 interface LinkArrowProps {
   href: string;
@@ -15,7 +16,9 @@ export default function LinkArrow({
   children,
   external,
 }: LinkArrowProps) {
-  const arrow = <ArrowRight className="arrow-icon h-3 w-3" strokeWidth={2.4} />;
+  const arrow = (
+    <ArrowUpRight className={`arrow-icon ${ICON}`} strokeWidth={ICON_STROKE} />
+  );
 
   if (external) {
     return (

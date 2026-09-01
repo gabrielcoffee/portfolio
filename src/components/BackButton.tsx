@@ -1,19 +1,21 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { ICON, ICON_STROKE } from "~/components/icons";
 
 interface BackButtonProps {
   href: string;
-  label?: string;
 }
 
-export default function BackButton({ href, label = "Back" }: BackButtonProps) {
+/* The arrow alone — where it goes is always one level up, and the page it
+   lands on says its own name. */
+export default function BackButton({ href }: BackButtonProps) {
   return (
     <Link
       href={href}
-      className="mb-8 flex items-center gap-2 text-small text-muted-foreground transition-colors hover:text-foreground"
+      aria-label="Back"
+      className="mb-8 -ml-1 flex w-fit items-center p-1 text-muted-foreground transition-colors hover:text-foreground"
     >
-      <ArrowLeft className="h-3 w-3" strokeWidth={2} />
-      {label}
+      <ArrowLeft className={ICON} strokeWidth={ICON_STROKE} />
     </Link>
   );
 }

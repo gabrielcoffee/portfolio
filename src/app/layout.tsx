@@ -1,31 +1,30 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Gloria_Hallelujah } from "next/font/google";
 import { ThemeProvider } from "~/components/ThemeProvider";
 import Header from "~/components/Header";
 import { site } from "~/data/site";
 import "~/styles/globals.css";
 
-const inter = localFont({
+/* Aeonik ships as static weights, so each cut is declared on its own. The
+   site only reaches for 400/500/600, plus 700 and italics for prose. */
+const aeonik = localFont({
   src: [
+    { path: "../fonts/Aeonik-Regular.woff2", weight: "400", style: "normal" },
     {
-      path: "../../node_modules/inter-ui/variable/InterVariable.woff2",
-      style: "normal",
+      path: "../fonts/Aeonik-RegularItalic.woff2",
+      weight: "400",
+      style: "italic",
     },
+    { path: "../fonts/Aeonik-Medium.woff2", weight: "500", style: "normal" },
+    { path: "../fonts/Aeonik-SemiBold.woff2", weight: "600", style: "normal" },
+    { path: "../fonts/Aeonik-Bold.woff2", weight: "700", style: "normal" },
     {
-      path: "../../node_modules/inter-ui/variable/InterVariable-Italic.woff2",
+      path: "../fonts/Aeonik-BoldItalic.woff2",
+      weight: "700",
       style: "italic",
     },
   ],
   variable: "--font-sans",
-  display: "swap",
-  weight: "100 900",
-});
-
-const hand = Gloria_Hallelujah({
-  subsets: ["latin"],
-  weight: "400",
-  variable: "--font-hand",
   display: "swap",
 });
 
@@ -44,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${hand.variable}`}
+      className={aeonik.variable}
       suppressHydrationWarning
     >
       <body className="font-sans antialiased">

@@ -41,7 +41,7 @@ export default async function WritingPage({ params }: PageProps) {
   return (
     <>
       <FadeIn index={0}>
-        <BackButton href="/journal" />
+        <BackButton href="/writings" />
       </FadeIn>
       <FadeIn index={1}>
         <PageHeader

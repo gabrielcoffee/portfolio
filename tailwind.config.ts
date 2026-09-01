@@ -16,7 +16,6 @@ export default {
       fontFamily: {
         sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
         serif: ["Georgia", ...defaultTheme.fontFamily.serif],
-        hand: ["var(--font-hand)", "cursive"],
       },
       colors: {
         border: "hsl(var(--border))",

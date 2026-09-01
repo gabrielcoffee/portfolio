@@ -3,10 +3,11 @@
 import { useAtom } from "jotai";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowUp } from "lucide-react";
+import { ICON, ICON_STROKE } from "~/components/icons";
 import { expandedProjectsAtom } from "~/lib/atoms";
 import { FadeIn } from "~/components/FadeIn";
-import ProjectPreview from "~/components/ProjectPreview";
-import PostPreview from "~/components/PostPreview";
+import Section from "~/components/Section";
+import Preview from "~/components/Preview";
 import LinkArrow from "~/components/LinkArrow";
 import type { WritingMetadata } from "~/lib/writings";
 import { projects } from "~/data/projects";
@@ -80,111 +81,93 @@ export default function HomeContent({
         </div>
       </div>
 
-      {/* PROJECTS */}
-      <div>
-        <FadeIn index={next()}>
-          <h2 className="flex items-center justify-between pb-1 text-medium text-muted-foreground">
-            Projects
-            {/* Nothing to expand into — no toggle. */}
-            {hiddenProjects.length > 0 && (
-              <button
-                onClick={() => setShowMoreProjects(!showMoreProjects)}
-                className="group flex items-center transition-all duration-200 ease-in-out hover:text-foreground"
-              >
-                {showMoreProjects ? "Less" : "More"}
-                {showMoreProjects ? (
-                  <ArrowUp className="ml-1 h-3" strokeWidth={2.6} />
-                ) : (
-                  <ArrowDown className="ml-1 h-3" strokeWidth={2.6} />
-                )}
-              </button>
-            )}
-          </h2>
-        </FadeIn>
-        {/* 3.25rem + the preview's own py-3 = the same 4rem gap the bio leaves. */}
-        <div className="grid grid-cols-1 pb-[3.25rem]">
-          {visibleProjects.map((project) => (
-            <FadeIn key={project.id} index={next()}>
-              <ProjectPreview
-                title={project.name}
-                description={project.description}
-                url={project.url}
-                logo={project.logo}
-              />
-            </FadeIn>
-          ))}
-          {/* initial={false}: arriving with the list already open should not
-              replay the expansion. */}
-          <AnimatePresence initial={false}>
-            {showMoreProjects && (
-              <motion.div
-                initial={{ opacity: 0, filter: "blur(4px)", height: 0 }}
-                animate={{ opacity: 1, filter: "blur(0px)", height: "auto" }}
-                exit={{ opacity: 0, filter: "blur(4px)", height: 0 }}
-                transition={{ duration: 0.3, type: "spring", bounce: 0 }}
-                className="grid grid-cols-1"
-              >
-                {hiddenProjects.map((project) => (
-                  <ProjectPreview
-                    key={project.id}
-                    title={project.name}
-                    description={project.description}
-                    url={project.url}
-                    logo={project.logo}
-                  />
-                ))}
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </div>
+      <Section
+        title="Projects"
+        index={next()}
+        className="grid grid-cols-1"
+        /* Nothing to expand into — no toggle. */
+        action={
+          hiddenProjects.length > 0 && (
+            <button
+              onClick={() => setShowMoreProjects(!showMoreProjects)}
+              className="group flex items-center transition-all duration-200 ease-in-out hover:text-foreground"
+            >
+              {showMoreProjects ? "Less" : "More"}
+              {showMoreProjects ? (
+                <ArrowUp className={`ml-1 ${ICON}`} strokeWidth={ICON_STROKE} />
+              ) : (
+                <ArrowDown className={`ml-1 ${ICON}`} strokeWidth={ICON_STROKE} />
+              )}
+            </button>
+          )
+        }
+      >
+        {visibleProjects.map((project) => (
+          <FadeIn key={project.id} index={next()}>
+            <Preview
+              kind="project"
+              title={project.name}
+              description={project.description}
+              url={project.url}
+            />
+          </FadeIn>
+        ))}
+        {/* initial={false}: arriving with the list already open should not
+            replay the expansion. */}
+        <AnimatePresence initial={false}>
+          {showMoreProjects && (
+            <motion.div
+              initial={{ opacity: 0, filter: "blur(4px)", height: 0 }}
+              animate={{ opacity: 1, filter: "blur(0px)", height: "auto" }}
+              exit={{ opacity: 0, filter: "blur(4px)", height: 0 }}
+              transition={{ duration: 0.3, type: "spring", bounce: 0 }}
+              className="grid grid-cols-1"
+            >
+              {hiddenProjects.map((project) => (
+                <Preview
+                  key={project.id}
+                  kind="project"
+                  title={project.name}
+                  description={project.description}
+                  url={project.url}
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Section>
 
-      {/* JOURNAL */}
-      <div>
-        <FadeIn
-          index={next()}
-          className="flex justify-between pb-1 align-middle text-medium text-muted-foreground"
-        >
-          Journal
-          {hasOlderWritings && <LinkArrow href="/journal">Older</LinkArrow>}
-        </FadeIn>
-        <ul className="flex flex-col pb-[3.25rem]">
+      <Section
+        title="Writings"
+        index={next()}
+        className="flex flex-col"
+        action={hasOlderWritings && <LinkArrow href="/writings">Older</LinkArrow>}
+      >
+        <ul className="flex flex-col">
           {writings.map((writing) => (
             <FadeIn as="li" index={next()} key={writing.slug}>
-              <PostPreview
+              <Preview
+                kind="writing"
                 title={writing.title}
                 description={writing.description}
+                type={writing.type}
                 slug={writing.slug}
+                date={writing.date}
               />
             </FadeIn>
           ))}
-          {writings.length === 0 && (
-            <FadeIn index={next()}>
-              <p className="py-3 text-small text-muted-foreground">
-                No writings yet.
-              </p>
-            </FadeIn>
-          )}
         </ul>
-      </div>
+      </Section>
 
-      {/* FIND ME */}
-      <div>
-        <FadeIn index={next()}>
-          <h2 className="pb-1 text-medium text-muted-foreground">Find Me</h2>
-        </FadeIn>
-        {/* pt-3 stands in for the py-3 the preview cards carry, so the drop
-            from every section heading to its first row matches. */}
-        <div className="flex flex-col gap-2 pt-3">
-          {socials.map((social) => (
-            <FadeIn key={social.href} index={next()}>
-              <LinkArrow href={social.href} external>
-                {social.label}
-              </LinkArrow>
-            </FadeIn>
-          ))}
-        </div>
-      </div>
+      <Section title="Find Me" index={next()} last className="flex flex-col">
+        {socials.map((social) => (
+          <FadeIn key={social.href} index={next()} className="py-3">
+            <LinkArrow href={social.href} external>
+              {social.label}
+            </LinkArrow>
+          </FadeIn>
+        ))}
+      </Section>
     </div>
   );
 }

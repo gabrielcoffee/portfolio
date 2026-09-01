@@ -9,7 +9,7 @@ import { inkCenteringOffset, measureInk } from "~/lib/ink";
 
 const links = [
   { href: "/", label: "start" },
-  { href: "/journal", label: "journal" },
+  { href: "/writings", label: "writings" },
   { href: "/archive", label: "archive" },
   { href: "/visitors", label: "visitors" },
 ];
@@ -23,7 +23,7 @@ const WORDMARK_SWAP_SCALE = 0.86;
 const WORDMARK_SWAP_DURATION = 1.2;
 
 /* NAV */
-const ICON_SIZE = "2.125rem";
+const ICON_SIZE = "2.125rem"; // nav icons are artwork, not lucide marks
 const ICON_IDLE_OPACITY = 0.6;
 const LABEL_IDLE_OPACITY = 0.85;
 const HOVER_LIFT = 0.15;

@@ -46,7 +46,7 @@ export const projects: Project[] = [
     id: "goalminder",
     name: "Goalminder",
     description: "Goal reminder webapp.",
-    url: "goalminder.netlify.app",
+    url: "https://goalminder.netlify.app",
     logo: "/logos/goalminder.svg",
   },
   {

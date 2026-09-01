@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# dev-only component gallery (local route, never deployed)
+/src/app/dev/
+/src/components/dev/
