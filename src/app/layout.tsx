@@ -43,11 +43,14 @@ const nanumMyeongjo = Nanum_Myeongjo({
 });
 
 export const metadata: Metadata = {
+  // Link previews need absolute URLs, e.g. for opengraph-image.png.
+  metadataBase: new URL("https://www.gabrielfp.com"),
   title: site.fullName,
   description: site.description,
   openGraph: {
     title: site.name,
     description: site.description,
+    url: "/",
     type: "website",
   },
   twitter: { card: "summary_large_image" },

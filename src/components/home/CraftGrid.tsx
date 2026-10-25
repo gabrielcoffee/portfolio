@@ -1,4 +1,5 @@
 import Image from "next/image";
+import AutoScroll from "~/components/home/AutoScroll";
 import PhoneFrame from "~/components/home/PhoneFrame";
 import {
   CELL,
@@ -14,12 +15,12 @@ import {
    sideways inside it. The gutter is padding on the scroller, so the strip
    starts and ends a few pixels from the screen edge. mx-auto centers the
    strip when the window is wider; narrower, the margins collapse to zero and
-   it starts at the left edge. */
+   it starts at the left edge, drifting left on touch screens until touched. */
 export default function CraftGrid({ tiles }: { tiles: CraftTile[] }) {
   return (
     <div className="relative left-1/2 w-screen -translate-x-1/2 select-none py-2">
       <div className="mx-auto max-w-[1920px]">
-        <div className="hide-scroll-bar overflow-x-auto px-6 md:px-3">
+        <AutoScroll className="hide-scroll-bar overflow-x-auto px-6 md:px-3">
           <div
             className="mx-auto grid w-max"
             style={{
@@ -32,7 +33,7 @@ export default function CraftGrid({ tiles }: { tiles: CraftTile[] }) {
               <Tile key={tile.id} tile={tile} />
             ))}
           </div>
-        </div>
+        </AutoScroll>
       </div>
     </div>
   );
