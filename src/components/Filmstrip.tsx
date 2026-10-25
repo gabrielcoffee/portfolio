@@ -1,184 +1,164 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { ICON, ICON_STROKE } from "~/components/icons";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Picture } from "~/lib/archive";
 
 /* THE KNOBS */
-const FRAME_HEIGHT = "clamp(11rem, 34vh, 17rem)";
-const GAP = "1rem";
-const IDLE_OPACITY = 0.4;
-const IDLE_SCALE = 0.92;
-const DURATION_MS = 160;
+const FRAME_HEIGHT = "clamp(13rem, 44vh, 24rem)"; // width follows at 4:3
+const GAP_REM = 1.25;
+const HOVER_SCALE = 1.07;
+const DURATION_MS = 140;
+const EASE = "cubic-bezier(0.2, 0, 0, 1)";
 
 interface FilmstripProps {
   pictures: Picture[];
 }
 
-/* How many strips are on the page. A page with one — the pictures archive —
-   wants the arrow keys to work without aiming first; a page with several (the
-   dev gallery) must not step all of them at once. Read inside the handler, so
-   it never needs to trigger a render. */
-let mounted = 0;
-
-/* A rail of photos scrolling sideways, one of them active. Arrows and the
-   left/right keys step the selection; the rail scrolls to follow. No frames,
-   no tilt, no springs — the movement is short and linear on purpose. */
+/* A rail of 4:3 photos that never ends: the list is laid out several times in
+   a row and the scroll position is wrapped back into the second copy, so the
+   seam is never reachable. Nothing fades — hover is the only state, and it
+   only ever changes size. */
 export default function Filmstrip({ pictures }: FilmstripProps) {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const railRef = useRef<HTMLUListElement>(null);
-  const itemRefs = useRef<(HTMLLIElement | null)[]>([]);
-  const [active, setActive] = useState(0);
+  const railRef = useRef<HTMLDivElement>(null);
+  const setRef = useRef<HTMLUListElement>(null);
+  // Width of one copy of the list, gap included. Measured, never guessed.
+  const setWidth = useRef(0);
+  const [copies, setCopies] = useState(3);
 
-  const step = useCallback(
-    (delta: number) => {
-      setActive((i) => Math.min(pictures.length - 1, Math.max(0, i + delta)));
-    },
-    [pictures.length],
-  );
+  /* One copy has to be at least as wide as the viewport, otherwise wrapping
+     into the second copy would leave bare rail on the right. */
+  const measure = useCallback(() => {
+    const rail = railRef.current;
+    const set = setRef.current;
+    if (!rail || !set) return;
 
-  useEffect(() => {
-    mounted++;
-    return () => {
-      mounted--;
-    };
+    const gap = GAP_REM * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const width = set.getBoundingClientRect().width + gap;
+    if (width <= 0) return;
+
+    setWidth.current = width;
+    setCopies(Math.max(3, Math.ceil(rail.clientWidth / width) + 2));
+
+    // Park in the second copy so there is room to scroll either way.
+    if (rail.scrollLeft < width) rail.scrollLeft = width;
   }, []);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      const root = rootRef.current;
-      if (!root) return;
-      // Aim only matters once a second strip exists.
-      const aimed =
-        mounted === 1 ||
-        root.matches(":hover") ||
-        root.contains(document.activeElement);
-      if (!aimed) return;
+  useLayoutEffect(() => {
+    measure();
+    const set = setRef.current;
+    if (!set) return;
 
-      if (e.key === "ArrowLeft") step(-1);
-      else if (e.key === "ArrowRight") step(1);
-      else return;
-      e.preventDefault();
+    // Photos arriving late change the set's width; re-measure when they do.
+    const observer = new ResizeObserver(measure);
+    observer.observe(set);
+    window.addEventListener("resize", measure);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", measure);
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [step]);
+  }, [measure]);
 
-  /* Centre the active photo in the rail. scrollIntoView would also scroll the
-     page, so the rail's own scrollLeft is set instead. */
+  /* The wrap. Both copies show identical pixels at the moment of the jump, so
+     it is invisible — as long as it is not animated. */
+  const onScroll = useCallback(() => {
+    const rail = railRef.current;
+    const width = setWidth.current;
+    if (!rail || width <= 0) return;
+
+    if (rail.scrollLeft >= width * 2) rail.scrollLeft -= width;
+    else if (rail.scrollLeft < width) rail.scrollLeft += width;
+  }, []);
+
+  /* A wheel with no horizontal axis — a mouse — still has to be able to move
+     the rail, since the page itself does not scroll here. */
   useEffect(() => {
     const rail = railRef.current;
-    const item = itemRefs.current[active];
-    if (!rail || !item) return;
+    if (!rail) return;
 
-    rail.scrollTo({
-      left: item.offsetLeft - (rail.clientWidth - item.clientWidth) / 2,
-      behavior: "smooth",
-    });
-  }, [active]);
+    const onWheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+      e.preventDefault();
+      rail.scrollLeft += e.deltaY;
+    };
+
+    rail.addEventListener("wheel", onWheel, { passive: false });
+    return () => rail.removeEventListener("wheel", onWheel);
+  }, []);
 
   // Nothing to show is nothing to say.
   if (pictures.length === 0) return null;
 
-  const current = pictures[active];
-
   return (
-    <div ref={rootRef}>
-      <div className="relative">
-        {/* The rail bleeds past the 40rem column so photos can run to both
-            screen edges, then pads itself back to the column's inner edge. */}
-        <ul
-          ref={railRef}
-          className="-mx-6 flex snap-x snap-mandatory overflow-x-auto px-6 md:mx-[calc(50%-50vw)] md:px-[calc(50vw-50%)]"
-          style={{ gap: GAP, scrollbarWidth: "none" }}
-        >
-          {pictures.map((picture, i) => {
-            const isActive = i === active;
-
-            return (
-              <li
-                key={picture.src}
-                ref={(el) => {
-                  itemRefs.current[i] = el;
-                }}
-                className="shrink-0 snap-center"
-                style={{
-                  height: FRAME_HEIGHT,
-                  opacity: isActive ? 1 : IDLE_OPACITY,
-                  transform: `scale(${isActive ? 1 : IDLE_SCALE})`,
-                  transition: `opacity ${DURATION_MS}ms ease-out, transform ${DURATION_MS}ms ease-out`,
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setActive(i)}
-                  aria-current={isActive}
-                  aria-label={picture.title}
-                  className="block h-full cursor-pointer"
-                >
-                  <Image
-                    src={picture.src}
-                    alt={picture.title}
-                    width={picture.width}
-                    height={picture.height}
-                    sizes="60vw"
-                    /* w-auto against a fixed height: the real ratio decides the
-                       width, so portraits stay narrow, landscapes stay wide,
-                       and nothing is cropped or reflows on load. */
-                    className="h-full w-auto rounded-sm"
-                    draggable={false}
-                  />
-                </button>
-              </li>
-            );
-          })}
-        </ul>
-
-        <Arrow side="left" onClick={() => step(-1)} disabled={active === 0} />
-        <Arrow
-          side="right"
-          onClick={() => step(1)}
-          disabled={active === pictures.length - 1}
-        />
-      </div>
-
-      {/* Fixed height so the caption swapping a year in or out never shifts
-          the rail above it. */}
-      <div className="mt-4 flex h-5 items-baseline justify-between gap-4">
-        <span className="truncate text-small">{current.title}</span>
-        <span className="shrink-0 text-small text-muted-foreground">
-          {current.year ? `${current.year} · ` : ""}
-          {active + 1}/{pictures.length}
-        </span>
+    <div
+      ref={railRef}
+      onScroll={onScroll}
+      tabIndex={0}
+      aria-label="Pictures"
+      className="w-full overflow-x-auto overflow-y-hidden overscroll-x-contain focus:outline-none"
+      style={{ scrollbarWidth: "none" }}
+    >
+      {/* Vertical padding is headroom: a hovered frame grows, and the rail
+          clips anything that leaves it. */}
+      <div className="flex w-max py-4" style={{ gap: `${GAP_REM}rem` }}>
+        {Array.from({ length: copies }, (_, copy) => (
+          <ul
+            key={copy}
+            // Only the first copy is measured; the rest are its clones.
+            ref={copy === 0 ? setRef : undefined}
+            className="flex w-max"
+            style={{ gap: `${GAP_REM}rem` }}
+            aria-hidden={copy > 0}
+          >
+            {pictures.map((picture) => (
+              <Frame key={picture.src} picture={picture} />
+            ))}
+          </ul>
+        ))}
       </div>
     </div>
   );
 }
 
-function Arrow({
-  side,
-  onClick,
-  disabled,
-}: {
-  side: "left" | "right";
-  onClick: () => void;
-  disabled: boolean;
-}) {
-  const Icon = side === "left" ? ChevronLeft : ChevronRight;
+function Frame({ picture }: { picture: Picture }) {
+  const [hovered, setHovered] = useState(false);
 
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      disabled={disabled}
-      aria-label={side === "left" ? "Previous picture" : "Next picture"}
-      className={`absolute top-1/2 z-10 -translate-y-1/2 rounded-full bg-background/80 p-1 text-muted-foreground backdrop-blur-sm transition-opacity duration-150 hover:text-foreground disabled:pointer-events-none disabled:opacity-0 ${
-        side === "left" ? "-left-2" : "-right-2"
-      }`}
+    <li
+      className="group shrink-0"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      <Icon className={ICON} strokeWidth={ICON_STROKE} />
-    </button>
+      <div
+        className="relative overflow-hidden bg-muted"
+        style={{
+          height: FRAME_HEIGHT,
+          aspectRatio: "4 / 3",
+          transformOrigin: "center",
+          transform: `scale(${hovered ? HOVER_SCALE : 1})`,
+          transition: `transform ${DURATION_MS}ms ${EASE}`,
+        }}
+      >
+        <Image
+          src={picture.src}
+          alt={picture.title}
+          fill
+          sizes="(max-width: 768px) 80vw, 40vw"
+          // Every photo is the same box, so the ratio mismatch is cropped.
+          className="object-cover"
+          draggable={false}
+        />
+      </div>
+      <div className="mt-3 flex items-baseline justify-between gap-3">
+        <span className="min-w-0 truncate text-small text-muted-foreground transition-colors duration-150 group-hover:text-foreground">
+          {picture.title}
+        </span>
+        {picture.year ? (
+          <span className="shrink-0 text-small text-muted-foreground">
+            {picture.year}
+          </span>
+        ) : null}
+      </div>
+    </li>
   );
 }

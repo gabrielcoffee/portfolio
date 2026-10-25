@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: 40 20% 98%;
-    --foreground: 20 8% 22%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 9%;
     --card: 40 15% 99%;
     --card-foreground: 20 8% 22%;
     --popover: 40 15% 99%;
@@ -27,31 +27,15 @@
     --radius: 0.5rem;
   }
 
-  .dark {
-    --background: 220 12% 10%;
-    --foreground: 220 8% 89%;
-    --card: 220 14% 12%;
-    --card-foreground: 220 8% 89%;
-    --popover: 220 14% 12%;
-    --popover-foreground: 220 8% 89%;
-    --primary: 220 8% 89%;
-    --primary-foreground: 220 14% 10%;
-    --secondary: 220 10% 16%;
-    --secondary-foreground: 220 8% 89%;
-    --muted: 220 10% 16%;
-    --muted-foreground: 220 5% 55%;
-    --accent: 220 10% 20%;
-    --accent-foreground: 220 8% 89%;
-    --destructive: 0 62% 55%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 220 10% 20%;
-    --input: 220 10% 20%;
-    --ring: 220 8% 89%;
-    --selected: 220 10% 22%;
-  }
 
   * {
     border-color: hsl(var(--border));
+  }
+
+  /* The Craft strip is 100vw wide; where a scrollbar eats into that, clip
+     instead of letting the page scroll sideways. */
+  html {
+    overflow-x: clip;
   }
 
   body {
@@ -71,6 +55,15 @@
 }
 
 @layer components {
+  .hide-scroll-bar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scroll-bar::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Arrow reveal on hover — from Gustavo's pattern */
   .arrow-reveal .arrow-icon {
     max-width: 0;

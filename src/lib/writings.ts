@@ -48,6 +48,12 @@ function listFiles(): WritingFile[] {
 
       const slug = path.basename(fileName, ".mdx");
       const filePath = path.join(dir, fileName);
+
+      // A draft without title or date isn't published yet — keep it off every
+      // list and out of the static build.
+      const { data } = matter(fs.readFileSync(filePath, "utf8"));
+      if (!data.title || !data.date) continue;
+
       const clash = seen.get(slug);
       if (clash) {
         throw new Error(

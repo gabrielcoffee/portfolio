@@ -35,6 +35,9 @@ const iconStyle = {
   filter: `drop-shadow(${NAV_SHADOW})`,
 } as const;
 
+/* Pages that take over the whole window and carry their own way back. */
+const BARE_ROUTES = ["/archive/pictures"];
+
 /* Module state, not component state: the entrance belongs to the page load,
    not to a render. Only ever written from an effect, so the server never sees
    it flipped. */
@@ -186,6 +189,8 @@ export default function Header() {
   useEffect(() => {
     entered = true;
   }, []);
+
+  if (BARE_ROUTES.includes(pathname)) return null;
 
   return (
     <aside className="relative mb-12">

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { ThemeProvider } from "~/components/ThemeProvider";
-import Header from "~/components/Header";
+import { Albert_Sans, Nanum_Myeongjo } from "next/font/google";
 import { site } from "~/data/site";
 import "~/styles/globals.css";
 
@@ -28,6 +27,21 @@ const aeonik = localFont({
   display: "swap",
 });
 
+const albertSans = Albert_Sans({
+  subsets: ["latin"],
+  variable: "--font-body",
+  display: "swap",
+});
+
+/* Not variable, so the weight is picked here. Headings only. No accented
+   Latin in this font, so keep titles accent-free. */
+const nanumMyeongjo = Nanum_Myeongjo({
+  weight: "700",
+  subsets: ["latin"],
+  variable: "--font-title",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: site.fullName,
   description: site.description,
@@ -43,19 +57,14 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={aeonik.variable}
-      suppressHydrationWarning
+      className={`${aeonik.variable} ${albertSans.variable} ${nanumMyeongjo.variable}`}
     >
       <body className="font-sans antialiased">
-        <ThemeProvider>
-          <div className="flex min-h-dvh flex-col">
-            {/* pt matches the header's own mb, so it sits in even air. */}
-            <main className="mx-auto w-full max-w-[40rem] flex-1 px-6 pb-16 pt-12 md:px-0">
-              <Header />
-              {children}
-            </main>
-          </div>
-        </ThemeProvider>
+        <div className="flex min-h-dvh flex-col">
+          <main className="mx-auto w-full max-w-[40rem] flex-1 px-8 pb-16 pt-6 md:px-0 md:pt-14">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );

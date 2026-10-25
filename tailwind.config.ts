@@ -14,7 +14,14 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-sans)", ...defaultTheme.fontFamily.sans],
+        /* Trying Albert Sans for body, Nanum Myeongjo for headings.
+           Aeonik is still loaded as the fallback behind both. */
+        sans: [
+          "var(--font-body)",
+          "var(--font-sans)",
+          ...defaultTheme.fontFamily.sans,
+        ],
+        title: ["var(--font-title)", "Georgia", ...defaultTheme.fontFamily.serif],
         serif: ["Georgia", ...defaultTheme.fontFamily.serif],
       },
       colors: {
