@@ -1,4 +1,4 @@
-/* The Work strip, as a grid of half-unit cells.
+/* The Creations strip, as a grid of half-unit cells.
 
    One unit is a 180px square. Cells are half a unit each way, so a tile can
    be 1.5 units wide or tall. The strip is five cells (2.5 units) high: a
