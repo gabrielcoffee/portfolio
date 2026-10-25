@@ -1,4 +1,6 @@
-/* The Creations strip, as a grid of half-unit cells.
+import { site } from "~/data/site";
+
+/* The Work life strip, as a grid of half-unit cells.
 
    One unit is a 180px square. Cells are half a unit each way, so a tile can
    be 1.5 units wide or tall. The strip is five cells (2.5 units) high: a
@@ -137,21 +139,21 @@ export const craft: CraftTile[] = [
   },
 
   {
-    id: "birds",
+    id: "trail",
     kind: "1xTall",
     col: 12,
     row: 1,
-    alt: "A flock of white birds flying low over a green hillside",
-    src: "/projects/birds.jpg",
+    alt: "Friends hiking single file up a jungle trail",
+    src: "/projects/trail.jpg",
   },
   {
-    id: "head-pencil",
+    id: "trees",
     kind: "1x1",
     col: 12,
     row: 4,
-    alt: "Ink drawing of a head with a pencil through it",
-    src: "/projects/drawings/head-pencil.jpg",
-    position: "50% 30%",
+    alt: "Pencil sketches of four small trees",
+    src: "/projects/drawings/trees.png",
+    href: site.instagram,
   },
 
   {

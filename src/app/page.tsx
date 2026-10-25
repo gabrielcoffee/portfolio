@@ -52,7 +52,7 @@ export default function Home() {
         or listening to music, lifting weights and hiking!
       </p>
 
-      <Section title="Creations">
+      <Section title="Work life">
         <CraftGrid tiles={craft} />
       </Section>
 
